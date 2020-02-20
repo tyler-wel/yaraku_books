@@ -1,5 +1,10 @@
 # Notes
 
+## Local development
+npm run dev  # rebuild everything
+npm run hot  # after setting up hot reloading, hot reload server
+php artisan serve --port=8181  # run laravel server
+
 ## Commands
 
 ### php artisan
@@ -21,8 +26,6 @@ php artisan serve --host=localhost --port=8181
 
 **hot-reloading**
 npm run hot
-
-
 
 ### Docker
 docker build -t {my_image} .
