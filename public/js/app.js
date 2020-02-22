@@ -74858,10 +74858,21 @@ function (_Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(BookList).call(this));
     _this.state = {
-      // Dummy data books until API is linked, TODO: link api
-      books: [],
+      // Dummy data for rendering before API
+      books: [{
+        title: "",
+        author: {
+          abr: ""
+        },
+        genre: "",
+        published: ""
+      }],
       // authors for suggestion system
-      authors: [],
+      authors: [{
+        firstName: "",
+        lastName: "",
+        abr: ""
+      }],
       // selected book and id for routing
       toBook: false,
       selectedBook: null,

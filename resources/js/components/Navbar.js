@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 
 // See getbootstrap.com/docs/4.0 for navbar stuff
 // Link replaces the anchor tags
-
 const Navbar = () => (
   <nav className='navbar navbar-expand-lg navbar-dark bg-dark navbar-laravel'>
     <div className='container'>

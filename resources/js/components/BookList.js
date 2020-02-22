@@ -13,13 +13,15 @@ const CancelToken = axios.CancelToken;
 const Source = CancelToken.source();
 
 
+/**
+ *
+ */
 class BookList extends Component {
   constructor() {
     super()
     this.state = {
-      // Dummy data books until API is linked, TODO: link api
       books: [],
-      // authors for suggestion system
+      // authors for search suggestion
       authors: [],
       // selected book and id for routing
       toBook: false,
@@ -36,6 +38,9 @@ class BookList extends Component {
     this.handleDelete = this.handleDelete.bind(this)
   }
 
+  /**
+   *
+   */
   componentDidMount() {
     this._isMounted = true;
     // if component mounted, call api for list of books
@@ -49,33 +54,46 @@ class BookList extends Component {
     })
   }
 
+  /**
+   *
+   */
   componentWillUnmount() {
     this._isMounted = false;
   }
 
-  // handle book creation
+  /**
+   *
+   * @param {*} event
+   */
   handleCreateNewBook(event) {
     event.preventDefault()
     console.log('attempting to create')
   }
 
-  // handle selected book deletion
+  /**
+   *
+   * @param {*} event
+   */
   handleDelete(event) {
     event.preventDefault()
     console.log('attempting to delete')
   }
 
-  // handle input field changes
+  /**
+   *
+   * @param {*} event
+   */
   handleFieldChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     })
   }
 
+  /**
+   *
+   */
   render() {
     const { books } = this.state
-    // BootstrapTable search bar
-    const { SearchBar } = Search;
 
     // Columns for BootstrapTable
     const columns = [
@@ -151,6 +169,10 @@ class BookList extends Component {
               />
     }
 
+    /**
+     *
+     * @param {*} props
+     */
     const CustomSearch = (props) => {
       let input;
       const handleClick = () => {
@@ -194,8 +216,8 @@ class BookList extends Component {
                 <form onSubmit={this.handleCreateNewBook}>
                   <div className="row">
                     <div className='form-group col-md-6'>
-                        <label htmlFor="title" className="input-label">Title</label>
-                        <input
+                      <label htmlFor="title" className="input-label">Title</label>
+                      <input
                         id='title'
                         className='form-control'
                         type='text'
@@ -205,13 +227,13 @@ class BookList extends Component {
                         autoComplete="off"
                         placeholder="Enter Title"
                         required
-                        />
+                      />
                     </div>
                     <div className='form-group col-md-6'>
-                        <label htmlFor="author" className="input-label">Author</label>
-                        <AutoComplete
+                      <label htmlFor="author" className="input-label">Author</label>
+                      <AutoComplete
                         suggestions={this.state.authors}
-                        />
+                      />
                     </div>
                   </div>
                   <div className="row">

@@ -3,10 +3,12 @@ import React, { Component } from 'react'
 // https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/getting-started.html
 // https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html - examples
 import BootstrapTable from 'react-bootstrap-table-next'
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
-
+/**
+ *
+ */
 class AuthorList extends Component {
   constructor() {
     super()
@@ -16,6 +18,9 @@ class AuthorList extends Component {
     this._isMounted = false;
   }
 
+  /**
+   *
+   */
   componentDidMount() {
     this._isMounted = true;
     // if component mounted, call api for list of books
@@ -28,10 +33,16 @@ class AuthorList extends Component {
     })
   }
 
+  /**
+   *
+   */
   componentWillUnmount() {
     this._isMounted = false;
   }
 
+  /**
+   *
+   */
   render() {
     const { authors } = this.state
 
@@ -73,6 +84,10 @@ class AuthorList extends Component {
       }]
     }
 
+    /**
+     *
+     * @param {*} props
+     */
     const CustomSearch = (props) => {
       let input;
       const handleClick = () => {

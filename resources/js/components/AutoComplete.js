@@ -1,7 +1,10 @@
+// TODO comment on fuzzysort
 const fuzzysort = require('fuzzysort')
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
+/**
+ *
+ */
 export class AutoComplete extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +19,10 @@ export class AutoComplete extends Component {
     this.onClick = this.onClick.bind(this);
   }
 
+  /**
+   *
+   * @param {*} event
+   */
   onChange(event) {
     const input = event.target.value
     const suggestions = this.state.suggestions
@@ -30,6 +37,10 @@ export class AutoComplete extends Component {
     })
   }
 
+  /**
+   *
+   * @param {*} event
+   */
   onClick(event) {
     this.setState({
       activeSuggestion: 0,
@@ -40,10 +51,16 @@ export class AutoComplete extends Component {
     })
   }
 
+  /**
+   *
+   * TODO: courtesy of:
+   */
   render() {
     let suggestionComponent;
+    // if input exists and we should be displaying
     if (this.state.showSuggestions && this.state.userInput) {
       if (this.state.filteredSuggestions.length) {
+        // return a component with a list of suggestions
         suggestionComponent = (
           <ul className="suggestions">
             {this.state.filteredSuggestions.map((suggestion, index) => {
@@ -56,6 +73,7 @@ export class AutoComplete extends Component {
           </ul>
         )
       } else {
+        // no suggestions, empty component
         suggestionComponent = (
           <div className="no-suggestion">
           </div>

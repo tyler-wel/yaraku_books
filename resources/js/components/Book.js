@@ -1,8 +1,10 @@
 import axios from 'axios'
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 import AutoComplete from './AutoComplete'
 
+/**
+ *
+ */
 class Book extends Component {
   constructor(props) {
     super(props)
@@ -20,6 +22,9 @@ class Book extends Component {
     this.switchToEdit = this.switchToEdit.bind(this)
   }
 
+  /**
+   *
+   */
   componentDidMount() {
     this._isMounted = true;
     // if component mounted, call api for list of books
@@ -33,31 +38,49 @@ class Book extends Component {
     })
   }
 
+  /**
+   *
+   */
   componentWillUnmount() {
     this._isMounted = false;
   }
 
+  /**
+   *
+   */
   switchToEdit() {
     this.setState({
       isEditing: true
     })
   }
 
+  /**
+   *
+   */
   reloadBook() {
 
   }
 
-    // handle input field changes
+  /**
+   *
+   * @param {*} event
+   */
   handleFieldChange(event) {
     this.setState({
       [`this.book.${event.target.name}`]: event.target.value
     })
   }
 
+  /**
+   *
+   */
   saveBook() {
     console.log('saving book')
   }
 
+  /**
+   *
+   */
   render() {
     const { book } = this.state
     if (this.state.isEditing) {
