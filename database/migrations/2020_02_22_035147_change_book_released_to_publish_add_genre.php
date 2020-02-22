@@ -6,31 +6,45 @@ use Illuminate\Support\Facades\Schema;
 
 class ChangeBookReleasedToPublishAddGenre extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::table('books', function (Blueprint $table) {
-            $table->renameColumn('released', 'published');
-            // consider defaulting this?
-            $table->string('genre')->nullable();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::table('books', function (Blueprint $table) {
+      $table->renameColumn('released', 'published');
+    });
 
     /**
-     * Reverse the migrations.
-     *
-     * @return void
+     * Having issues with changing multiple columns in this migration
+     * for now just moving genre to the original migration file.
+     * Not good management low on time
+     * See https://stackoverflow.com/questions/42165587/laravel-table-has-no-column-named
      */
-    public function down()
-    {
-        Schema::table('books', function (Blueprint $table) {
-            // rollback the up 
-            $table->renameColumn('published', 'released');
-            $table->dropColumn('genre');
-        });
-    }
+
+    // Schema::table('books', function (Blueprint $table) {
+    //   $table->string('genre')->nullable();
+    // });
+
+  }
+
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::table('books', function (Blueprint $table) {
+      $table->renameColumn('published', 'released');
+    });
+
+    // Same as comment in up()
+
+    // Schema::table('books', function (Blueprint $table) {
+    //   $table->dropColumn('genre');
+    // });
+  }
 }
