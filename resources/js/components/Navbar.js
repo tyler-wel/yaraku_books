@@ -3,7 +3,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const Header = () => (
+const Navbar = () => (
   <nav className='navbar navbar-expand-md navbar-light navbar-laravel'>
     <div className='container'>
       <Link className='navbar-brand' to='/'>Books</Link>
@@ -11,4 +11,4 @@ const Header = () => (
   </nav>
 )
 
-export default Header
+export default Navbar
