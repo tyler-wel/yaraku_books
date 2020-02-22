@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Author;
+use App\Book;
 use Illuminate\Http\Request;
+use Log;
 
 class BookController extends Controller
 {
@@ -13,16 +16,16 @@ class BookController extends Controller
    */
   public function index() {
     $books = Book::all();
-    
+
     return response()->json($books, 200);
   }
 
-  
+
   /**
    * Create new book
    *
    * @param Request $request
-   * @return Response 
+   * @return Response
    */
   public function store(Request $request) {
     $validatedData = $request->validate([
@@ -48,18 +51,19 @@ class BookController extends Controller
 
   /**
    * Show specific book
-   * 
+   *
    * @param int $id
    * @return Response
    */
   public function show($id) {
-    $book = Book::with('author')->findOrFail($id); 
+    Log::info($id);
+    $book = Book::with('author')->findOrFail($id);
     return response()->json($book, 200);
   }
 
   /**
    * Update an existing book
-   * 
+   *
    * @param Request $request
    * @param int $id
    * @return Response
@@ -74,7 +78,7 @@ class BookController extends Controller
 
   /**
    * Deletes existing book
-   * 
+   *
    * @param int $id
    * @return int
    */

@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Navbar from './Navbar'
+import BookList from './BookList'
+import Book from './Book'
 
 class App extends Component {
   render () {
@@ -12,8 +14,8 @@ class App extends Component {
       <div>
         <Navbar />
         <Switch>
-          {/* <Route exact path='/' component={ProjectsList} /> */}
-          Hello!!!!
+          <Route exact path='/' component={BookList}/>
+          <Route path='/books/:id' component={Book}/>
         </Switch>
       </div>
       </BrowserRouter>

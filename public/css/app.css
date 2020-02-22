@@ -10887,3 +10887,75 @@ a.text-dark:focus {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+.form-group {
+  margin-bottom: 0.25rem;
+}
+
+.form-button {
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+.card-title {
+  font-size: large;
+}
+
+.no-suggestions {
+  color: #999;
+  padding: 0.5rem;
+}
+
+.suggestions {
+  border: 1px solid #999;
+  background-color: white;
+  border-top-width: 0;
+  list-style: none;
+  margin-top: 0;
+  max-height: 143px;
+  overflow-y: auto;
+  padding-left: 0;
+  width: calc(300px + 1rem);
+  position: absolute;
+  z-index: 10;
+}
+
+.suggestions li {
+  padding: 0.5rem;
+}
+
+.suggestions li:hover {
+  background-color: #b9b9b9;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.suggestions li:not(:last-of-type) {
+  border-bottom: 1px solid #999;
+}
+
+.btn-secondary {
+  color: black;
+  background-color: white;
+}
+
+.search-bar .edit-btn {
+  float: right;
+  margin-bottom: 0.5rem;
+}
+
+.book-info .book-title {
+  font-size: 1.75rem;
+}
+
+.book-info .book-author {
+  font-size: 1.5rem;
+}
+
+.book-info .info-label {
+  font-size: 1.25rem;
+}
+
+.book-info .info-desc {
+  margin-bottom: 1rem;
+}
+

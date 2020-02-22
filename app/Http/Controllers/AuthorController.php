@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Author;
+use App\Book;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -15,18 +16,18 @@ class AuthorController extends Controller
    */
   public function index() {
     // instead of all, maybe get where release_date > today?
-    // filter by released 
+    // filter by released
     $authors = Author::all();
-    
+
     return response()->json($authors, 200);
   }
 
-  
+
   /**
    * Create new author
    *
    * @param Request $request
-   * @return Response 
+   * @return Response
    */
   public function store(Request $request) {
     $validatedData = $request->validate([
@@ -46,18 +47,18 @@ class AuthorController extends Controller
 
   /**
    * Show specific author
-   * 
+   *
    * @param int $id
    * @return Response
    */
   public function show($id) {
-    $author = Author::with('books')->findOrFail($id); 
+    $author = Author::with('books')->findOrFail($id);
     return response()->json($author, 200);
   }
 
   /**
    * Update an existing author
-   * 
+   *
    * @param Request $request
    * @param int $id
    * @return Author
@@ -71,7 +72,7 @@ class AuthorController extends Controller
 
   /**
    * Deletes existing author
-   * 
+   *
    * @param int $id
    * @return int
    */

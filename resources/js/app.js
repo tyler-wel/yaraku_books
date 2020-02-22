@@ -13,4 +13,7 @@ require('./bootstrap');
  */
 
 require('./components/App')
-
+require('react-bootstrap-table-next/dist/react-bootstrap-table2.min.css')
+require('react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css');
+require('react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css');
+require('@fortawesome/fontawesome-free/js/all.js')
