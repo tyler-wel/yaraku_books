@@ -18,13 +18,21 @@ use Illuminate\Support\Str;
 |
 */
 
+class AbrFaker extends \Faker\Provider\Base {
+    public function abr($fn, $ln) {
+      $sentence = $this->generator->sentence($nbWords);
+      return substr($sentence, 0, strlen($sentence) - 1);
+    }
+  }
+
 $factory->define(Author::class, function (Faker $faker) {
 //   $faker->addProvider(new Faker\Provider\en_US\Person($faker));
-
+  $firstName = $faker->firstName;
+  $lastName = $faker->lastName;
   return [
-    'firstName' => $faker->firstName,
-    'lastName' => $faker->lastName,
-    'abr' => "",
+    'firstName' => $firstName,
+    'lastName' => $lastName,
+    'abr' => substr($firstName, 0, 1) . ". " . $lastName,
   ];
 });
 

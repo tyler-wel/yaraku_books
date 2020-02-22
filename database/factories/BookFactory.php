@@ -18,7 +18,7 @@ use Illuminate\Support\Str;
 */
 
 class BookFaker extends \Faker\Provider\Base {
-  public function title($nbWords = 5) {
+  public function title($nbWords = 3) {
     $sentence = $this->generator->sentence($nbWords);
     return substr($sentence, 0, strlen($sentence) - 1);
   }
