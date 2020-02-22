@@ -10892,8 +10892,12 @@ a.text-dark:focus {
 }
 
 .form-button {
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
   margin-left: 0.5rem;
+}
+
+.search-bar {
+  margin-bottom: 1rem;
 }
 
 .card-title {

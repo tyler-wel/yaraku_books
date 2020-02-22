@@ -74224,13 +74224,12 @@ function (_Component) {
     _classCallCheck(this, AutoComplete);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(AutoComplete).call(this, props));
-    console.log(_this.props);
     _this.state = {
       activeSuggestion: 0,
       filteredSuggestions: [],
       showSuggestions: false,
-      userInput: '',
-      suggestions: props.suggestions
+      userInput: _this.props.origInput ? _this.props.origInput.fullName : '',
+      suggestions: _this.props.suggestions
     };
     _this.onChange = _this.onChange.bind(_assertThisInitialized(_this));
     _this.onClick = _this.onClick.bind(_assertThisInitialized(_this));
@@ -74321,6 +74320,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _AutoComplete__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AutoComplete */ "./resources/js/components/AutoComplete.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -74340,6 +74340,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -74366,14 +74367,20 @@ function (_Component) {
         genre: "Fantasy",
         author: {
           fullName: "Mall Op"
-        },
-        isEditing: false
-      }
+        }
+      },
+      authors: [{
+        fullName: "Mall Op"
+      }, {
+        fullName: "Paul Ron"
+      }],
+      isEditing: false
     };
     _this._isMounted = false;
     _this.reloadBook = _this.reloadBook.bind(_assertThisInitialized(_this));
     _this.saveBook = _this.saveBook.bind(_assertThisInitialized(_this));
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
+    _this.switchToEdit = _this.switchToEdit.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -74397,6 +74404,14 @@ function (_Component) {
       this._isMounted = false;
     }
   }, {
+    key: "switchToEdit",
+    value: function switchToEdit() {
+      this.setState({
+        isEditing: true
+      });
+      console.log(this);
+    }
+  }, {
     key: "reloadBook",
     value: function reloadBook() {} // handle input field changes
 
@@ -74414,31 +74429,102 @@ function (_Component) {
     key: "render",
     value: function render() {
       var book = this.state.book;
+      console.log(this.state.isEditing);
 
-      if (this.state.toBook && this.state.selectedBook !== null) {
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Redirect"], {
-          to: "/books/".concat(this.state.selectedBook)
-        });
-      }
-
-      if (this.isEditing) {
+      if (this.state.isEditing) {
         return (// see https://getbootstrap.com/docs/4.0/layout/grid/ for more info on setting up grids
-          // py ~ padding + top/bottom
           react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-            className: "container py-4 book-info"
+            className: "container py-4"
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "row justify-content-center"
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "col-md-12"
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-            className: "card"
+            className: "card book-info"
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-            className: "card-header"
-          })))))
+            className: "card-header book-title"
+          }, "Edit"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+            className: "card-body"
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
+            onSubmit: this.saveBook
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+            className: "row"
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+            className: "col-md-10"
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+            htmlFor: "title",
+            className: "info-label"
+          }, "Title"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+            id: "title",
+            className: "form-control",
+            type: "text",
+            name: "title",
+            value: this.state.book.title,
+            onChange: this.handleFieldChange,
+            autoComplete: "off",
+            placeholder: "Enter Title"
+          }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+            className: "row"
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+            className: "col-md-10"
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+            htmlFor: "author",
+            className: "info-label"
+          }, "Author"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_AutoComplete__WEBPACK_IMPORTED_MODULE_3__["default"], {
+            suggestions: this.state.authors,
+            origInput: this.state.book.author,
+            ref: "auto-complete"
+          }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+            className: "row"
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+            className: "col-md-10"
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+            htmlFor: "description",
+            className: "info-label"
+          }, "Description"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+            id: "description",
+            className: "form-control",
+            type: "text",
+            name: "description",
+            value: this.state.book.description,
+            onChange: this.handleFieldChange,
+            autoComplete: "off",
+            placeholder: "Enter Description"
+          }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+            className: "row"
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+            className: "col-md-5"
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+            htmlFor: "genre",
+            className: "info-label"
+          }, "Genre"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+            id: "genre",
+            className: "form-control",
+            type: "text",
+            name: "genre",
+            value: this.state.book.genre,
+            onChange: this.handleFieldChange,
+            placeholder: "Enter a Genre"
+          })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+            className: "col-md-5"
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
+            htmlFor: "published",
+            className: "info-label"
+          }, "Published"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+            id: "published",
+            className: "form-control",
+            type: "date",
+            name: "published",
+            value: this.state.book.published,
+            onChange: this.handleFieldChange
+          }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+            className: "row"
+          }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+            className: "btn btn-primary col-md-1 form-button"
+          }, "Save"))))))))
         );
       } else {
         return (// see https://getbootstrap.com/docs/4.0/layout/grid/ for more info on setting up grids
-          // py ~ padding + top/bottom
           react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "container py-4"
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -74454,7 +74540,8 @@ function (_Component) {
           }, book.title, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("span", {
             className: "edit-btn"
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-            className: "btn btn-primary"
+            className: "btn btn-primary",
+            onClick: this.switchToEdit
           }, "Edit"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "col-md-12 book-author"
           }, book.author.fullName)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -74619,6 +74706,7 @@ function (_Component) {
     _this._isMounted = false;
     _this.handleCreateNewBook = _this.handleCreateNewBook.bind(_assertThisInitialized(_this));
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
+    _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -74643,7 +74731,17 @@ function (_Component) {
 
   }, {
     key: "handleCreateNewBook",
-    value: function handleCreateNewBook(event) {} // handle input field changes
+    value: function handleCreateNewBook(event) {
+      event.preventDefault();
+      console.log('attempting to create');
+    } // handle selected book deletion
+
+  }, {
+    key: "handleDelete",
+    value: function handleDelete(event) {
+      event.preventDefault();
+      console.log('attempting to delete');
+    } // handle input field changes
 
   }, {
     key: "handleFieldChange",
@@ -74730,7 +74828,37 @@ function (_Component) {
             }
           }
         });
-      } // checkbox for row selection
+      }
+
+      var CustomSearch = function CustomSearch(props) {
+        var input;
+
+        var handleClick = function handleClick() {
+          props.onSearch(input.value);
+        };
+
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "row search-row"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "col-md-6"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+          className: "form-control",
+          style: {},
+          ref: function ref(n) {
+            return input = n;
+          },
+          type: "text",
+          placeholder: "Search"
+        })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+          className: "btn btn-primary",
+          onClick: handleClick
+        }, "Search")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "btn d-flex",
+          onClick: _this3.handleDelete
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+          "class": "fa fa-trash"
+        })));
+      }; // checkbox for row selection
 
 
       var selectRow = {
@@ -74821,8 +74949,8 @@ function (_Component) {
           bootstrap4: true,
           search: true
         }, function (props) {
-          return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(SearchBar, _extends({
-            className: "col-md-3 search-bar"
+          return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(CustomSearch, _extends({
+            className: "search-bar"
           }, props.searchProps)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_table_next__WEBPACK_IMPORTED_MODULE_3___default.a, _extends({}, props.baseProps, {
             pagination: react_bootstrap_table2_paginator__WEBPACK_IMPORTED_MODULE_5___default()(pageOptions),
             selectRow: selectRow

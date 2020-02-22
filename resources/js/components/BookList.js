@@ -56,6 +56,7 @@ class BookList extends Component {
 
     this.handleCreateNewBook = this.handleCreateNewBook.bind(this)
     this.handleFieldChange = this.handleFieldChange.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   componentDidMount() {
@@ -74,7 +75,14 @@ class BookList extends Component {
 
   // handle book creation
   handleCreateNewBook(event) {
+    event.preventDefault()
+    console.log('attempting to create')
+  }
 
+  // handle selected book deletion
+  handleDelete(event) {
+    event.preventDefault()
+    console.log('attempting to delete')
   }
 
   // handle input field changes
@@ -160,6 +168,32 @@ class BookList extends Component {
                   state: { id: this.state.selectedBook }
                 }}
               />
+    }
+
+    const CustomSearch = (props) => {
+      let input;
+      const handleClick = () => {
+        props.onSearch(input.value)
+      };
+      return (
+        <div className="row search-row">
+          <div className="col-md-6">
+            <input
+              className='form-control'
+              style={ {} }
+              ref={ n => input = n}
+              type='text'
+              placeholder="Search"
+            />
+          </div>
+          <div className="col-md-4">
+            <button className='btn btn-primary' onClick={ handleClick }>Search</button>
+          </div>
+          <div className="btn trash-btn col-md-2" onClick={ this.handleDelete }>
+            <i class="fa fa-trash"></i>
+          </div>
+        </div>
+      )
     }
 
     // checkbox for row selection
@@ -248,7 +282,7 @@ class BookList extends Component {
                   {
                     props => (
                       <div>
-                        <SearchBar className="col-md-3 search-bar" { ...props.searchProps } />
+                        <CustomSearch className="search-bar" { ...props.searchProps } />
                         <BootstrapTable
                           { ...props.baseProps }
                           pagination={ paginationFactory(pageOptions) }
