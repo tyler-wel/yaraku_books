@@ -13,6 +13,8 @@ php artisan make:model {Model} -m
 
 php artisan migrate
 
+php artisan migrate:fresh --seed
+
 php artisan make:controller ModelController
 
 php artisan make:seeder UsersTableSeeder
