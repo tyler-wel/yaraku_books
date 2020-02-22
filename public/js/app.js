@@ -74119,6 +74119,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Navbar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Navbar */ "./resources/js/components/Navbar.js");
 /* harmony import */ var _BookList__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./BookList */ "./resources/js/components/BookList.js");
 /* harmony import */ var _Book__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Book */ "./resources/js/components/Book.js");
+/* harmony import */ var _AuthorList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./AuthorList */ "./resources/js/components/AuthorList.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -74138,6 +74139,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 // resources/assets/js/components/App.js
+
 
 
 
@@ -74166,6 +74168,9 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/books/:id",
         component: _Book__WEBPACK_IMPORTED_MODULE_5__["default"]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+        path: "/authors",
+        component: _AuthorList__WEBPACK_IMPORTED_MODULE_6__["default"]
       }))));
     }
   }]);
@@ -74174,6 +74179,200 @@ function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
 react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(App, null), document.getElementById('app'));
+
+/***/ }),
+
+/***/ "./resources/js/components/AuthorList.js":
+/*!***********************************************!*\
+  !*** ./resources/js/components/AuthorList.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_bootstrap_table_next__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap-table-next */ "./node_modules/react-bootstrap-table-next/lib/index.js");
+/* harmony import */ var react_bootstrap_table_next__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_bootstrap_table_next__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_bootstrap_table2_toolkit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap-table2-toolkit */ "./node_modules/react-bootstrap-table2-toolkit/lib/index.js");
+/* harmony import */ var react_bootstrap_table2_toolkit__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_bootstrap_table2_toolkit__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_bootstrap_table2_paginator__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-bootstrap-table2-paginator */ "./node_modules/react-bootstrap-table2-paginator/lib/index.js");
+/* harmony import */ var react_bootstrap_table2_paginator__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(react_bootstrap_table2_paginator__WEBPACK_IMPORTED_MODULE_4__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+ // https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/getting-started.html
+// https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html - examples
+
+
+
+
+
+var AuthorList =
+/*#__PURE__*/
+function (_Component) {
+  _inherits(AuthorList, _Component);
+
+  function AuthorList() {
+    var _this;
+
+    _classCallCheck(this, AuthorList);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(AuthorList).call(this));
+    _this.state = {
+      authors: []
+    };
+    _this._isMounted = false;
+    return _this;
+  }
+
+  _createClass(AuthorList, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      this._isMounted = true; // if component mounted, call api for list of books
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/authors').then(function (response) {
+        if (_this2._isMounted) {
+          _this2.setState({
+            authors: response.data
+          });
+        }
+      });
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this._isMounted = false;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var authors = this.state.authors; // Columns for BootstrapTable
+
+      var columns = [{
+        dataField: 'firstName',
+        text: 'First Name',
+        sort: true
+      }, {
+        dataField: 'lastName',
+        text: 'Last Name',
+        sort: true
+      }, {
+        dataField: 'abr',
+        text: 'Abbreviation',
+        sort: true
+      }]; // Pagination options for BootstrapTable
+
+      var pageOptions = {
+        paginationSize: 4,
+        pageStartIndex: 0,
+        firstPageText: 'First',
+        prePageText: 'Back',
+        nextPageText: 'Next',
+        lastPageText: 'Last',
+        nextPageTitle: 'First page',
+        prePageTitle: 'Pre page',
+        firstPageTitle: 'Next page',
+        lastPageTitle: 'Last page',
+        showTotal: false,
+        sizePerPageList: [{
+          text: '20',
+          value: 20
+        }, {
+          text: '50',
+          value: 50
+        }, {
+          text: 'All',
+          value: authors.length
+        }]
+      };
+
+      var CustomSearch = function CustomSearch(props) {
+        var input;
+
+        var handleClick = function handleClick() {
+          props.onSearch(input.value);
+        };
+
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "row search-row"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "col-md-6"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+          className: "form-control",
+          style: {},
+          ref: function ref(n) {
+            return input = n;
+          },
+          type: "text",
+          placeholder: "Search"
+        })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "col-md-4"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+          className: "btn btn-primary",
+          onClick: handleClick
+        }, "Search")));
+      };
+
+      return (// see https://getbootstrap.com/docs/4.0/layout/grid/ for more info on setting up grids
+        react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "container py-4"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "row justify-content-center"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "col-md-12"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "card"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "card-header"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "d-flex justify-content-between align-items-center card-title"
+        }, "All Authors")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "card-body"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_table2_toolkit__WEBPACK_IMPORTED_MODULE_3___default.a, {
+          keyField: "id",
+          data: authors,
+          columns: columns,
+          bootstrap4: true,
+          search: true
+        }, function (props) {
+          return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(CustomSearch, _extends({
+            className: "search-bar"
+          }, props.searchProps)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(react_bootstrap_table_next__WEBPACK_IMPORTED_MODULE_2___default.a, _extends({}, props.baseProps, {
+            pagination: react_bootstrap_table2_paginator__WEBPACK_IMPORTED_MODULE_4___default()(pageOptions)
+          })));
+        }))))))
+      );
+    }
+  }]);
+
+  return AuthorList;
+}(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (AuthorList);
 
 /***/ }),
 
@@ -74360,20 +74559,11 @@ function (_Component) {
     _this.state = {
       // Dummy data books until API is linked
       book: {
-        id: 1,
-        title: "Book 1",
-        description: "Description 1",
-        published: "02/22/2020",
-        genre: "Fantasy",
         author: {
-          fullName: "Mall Op"
+          abr: ""
         }
       },
-      authors: [{
-        fullName: "Mall Op"
-      }, {
-        fullName: "Paul Ron"
-      }],
+      authors: [],
       isEditing: false
     };
     _this._isMounted = false;
@@ -74391,10 +74581,13 @@ function (_Component) {
 
       this._isMounted = true; // if component mounted, call api for list of books
 
-      console.log(this.props);
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/books/".concat(this.props.match.params.id)).then(function (response) {
         if (_this2._isMounted) {
           console.log(response);
+
+          _this2.setState({
+            book: response.data
+          });
         }
       });
     }
@@ -74409,7 +74602,6 @@ function (_Component) {
       this.setState({
         isEditing: true
       });
-      console.log(this);
     }
   }, {
     key: "reloadBook",
@@ -74429,7 +74621,6 @@ function (_Component) {
     key: "render",
     value: function render() {
       var book = this.state.book;
-      console.log(this.state.isEditing);
 
       if (this.state.isEditing) {
         return (// see https://getbootstrap.com/docs/4.0/layout/grid/ for more info on setting up grids
@@ -74544,7 +74735,7 @@ function (_Component) {
             onClick: this.switchToEdit
           }, "Edit"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "col-md-12 book-author"
-          }, book.author.fullName)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          }, book.author.abr)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "card-body"
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "row"
@@ -74668,33 +74859,9 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(BookList).call(this));
     _this.state = {
       // Dummy data books until API is linked, TODO: link api
-      books: [{
-        id: 1,
-        title: "Book 1",
-        description: "Description 1",
-        published: "02/22/2020",
-        genre: "Fantasy",
-        author: {
-          id: 1,
-          fullName: "Mall Op"
-        }
-      }, {
-        id: 2,
-        title: "Book 2",
-        description: "Description 2",
-        published: "02/22/2020",
-        genre: "Fantasy",
-        author: {
-          id: 2,
-          fullName: "Paul Ron"
-        }
-      }],
+      books: [],
       // authors for suggestion system
-      authors: [{
-        fullName: "Mall Op"
-      }, {
-        fullName: "Paul Ron"
-      }],
+      authors: [],
       // selected book and id for routing
       toBook: false,
       selectedBook: null,
@@ -74720,6 +74887,10 @@ function (_Component) {
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/books').then(function (response) {
         if (_this2._isMounted) {
           console.log(response);
+
+          _this2.setState({
+            books: response.data
+          });
         }
       });
     }
@@ -74778,7 +74949,7 @@ function (_Component) {
           cursor: 'pointer'
         }
       }, {
-        dataField: 'author.fullName',
+        dataField: 'author.abr',
         text: 'Author',
         sort: true,
         events: {
@@ -74792,7 +74963,8 @@ function (_Component) {
         text: 'Genre'
       }, {
         dataField: 'published',
-        text: 'Published'
+        text: 'Published',
+        sort: true
       }]; // Pagination options for BootstrapTable
 
       var pageOptions = {
@@ -74808,11 +74980,11 @@ function (_Component) {
         lastPageTitle: 'Last page',
         showTotal: false,
         sizePerPageList: [{
-          text: '5',
-          value: 5
+          text: '20',
+          value: 20
         }, {
-          text: '10',
-          value: 10
+          text: '50',
+          value: 50
         }, {
           text: 'All',
           value: books.length
@@ -74843,17 +75015,18 @@ function (_Component) {
           className: "col-md-6"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
           className: "form-control",
-          style: {},
           ref: function ref(n) {
             return input = n;
           },
           type: "text",
           placeholder: "Search"
-        })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "col-md-4"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
           className: "btn btn-primary",
           onClick: handleClick
         }, "Search")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-          className: "btn d-flex",
+          className: "btn trash-btn col-md-2",
           onClick: _this3.handleDelete
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
           "class": "fa fa-trash"

@@ -10896,8 +10896,13 @@ a.text-dark:focus {
   margin-left: 0.5rem;
 }
 
-.search-bar {
+.search-row {
   margin-bottom: 1rem;
+}
+
+.trash-btn {
+  text-align: end;
+  padding-right: 1rem;
 }
 
 .card-title {

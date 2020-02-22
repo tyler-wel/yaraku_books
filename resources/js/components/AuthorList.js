@@ -1,0 +1,139 @@
+import axios from 'axios'
+import React, { Component } from 'react'
+// https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/getting-started.html
+// https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html - examples
+import BootstrapTable from 'react-bootstrap-table-next'
+import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+
+
+class AuthorList extends Component {
+  constructor() {
+    super()
+    this.state = {
+      authors: [],
+    }
+    this._isMounted = false;
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+    // if component mounted, call api for list of books
+    axios.get('/api/authors').then(response => {
+      if(this._isMounted) {
+        this.setState({
+          authors: response.data
+        })
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
+  render() {
+    const { authors } = this.state
+
+    // Columns for BootstrapTable
+    const columns = [
+    {
+      dataField: 'firstName',
+      text: 'First Name',
+      sort: true,
+    }, {
+      dataField: 'lastName',
+      text: 'Last Name',
+      sort: true,
+    }, {
+      dataField: 'abr',
+      text: 'Abbreviation',
+      sort: true
+    }]
+
+    // Pagination options for BootstrapTable
+    const pageOptions = {
+      paginationSize: 4,
+      pageStartIndex: 0,
+      firstPageText: 'First',
+      prePageText: 'Back',
+      nextPageText: 'Next',
+      lastPageText: 'Last',
+      nextPageTitle: 'First page',
+      prePageTitle: 'Pre page',
+      firstPageTitle: 'Next page',
+      lastPageTitle: 'Last page',
+      showTotal: false,
+      sizePerPageList: [{
+        text: '20', value: 20
+      }, {
+        text: '50', value: 50
+      }, {
+        text: 'All', value: authors.length
+      }]
+    }
+
+    const CustomSearch = (props) => {
+      let input;
+      const handleClick = () => {
+        props.onSearch(input.value)
+      };
+      return (
+        <div className="row search-row">
+          <div className="col-md-6">
+            <input
+              className='form-control'
+              style={ {} }
+              ref={ n => input = n}
+              type='text'
+              placeholder="Search"
+            />
+          </div>
+          <div className="col-md-4">
+            <button className='btn btn-primary' onClick={ handleClick }>Search</button>
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      // see https://getbootstrap.com/docs/4.0/layout/grid/ for more info on setting up grids
+      <div className="container py-4">
+        <div className="row justify-content-center">
+          <div className="col-md-12">
+            <div className="card">
+              <div className="card-header">
+                <div className="d-flex justify-content-between align-items-center card-title">
+                  All Authors
+                </div>
+              </div>
+              <div className="card-body">
+                <ToolkitProvider
+                  keyField='id'
+                  data={ authors }
+                  columns={ columns }
+                  bootstrap4
+                  search
+                >
+                  {
+                    props => (
+                      <div>
+                        <CustomSearch className="search-bar" { ...props.searchProps } />
+                        <BootstrapTable
+                          { ...props.baseProps }
+                          pagination={ paginationFactory(pageOptions) }
+                        />
+                      </div>
+                    )
+                  }
+                </ToolkitProvider>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default AuthorList
