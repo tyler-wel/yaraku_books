@@ -18,32 +18,9 @@ class BookList extends Component {
     super()
     this.state = {
       // Dummy data books until API is linked, TODO: link api
-      books: [
-        {
-          id: 1,
-          title: "Book 1",
-          description: "Description 1",
-          published: "02/22/2020",
-          genre: "Fantasy",
-          author: {
-            id: 1,
-            fullName: "Mall Op"
-          }
-        },
-        {
-          id: 2,
-          title: "Book 2",
-          description: "Description 2",
-          published: "02/22/2020",
-          genre: "Fantasy",
-          author: {
-            id: 2,
-            fullName: "Paul Ron"
-          }
-        }
-      ],
+      books: [],
       // authors for suggestion system
-      authors: [{fullName: "Mall Op"}, {fullName: "Paul Ron"}],
+      authors: [],
       // selected book and id for routing
       toBook: false,
       selectedBook: null,
@@ -65,6 +42,9 @@ class BookList extends Component {
     axios.get('/api/books').then(response => {
       if(this._isMounted) {
         console.log(response)
+        this.setState({
+          books: response.data
+        })
       }
     })
   }
@@ -119,7 +99,7 @@ class BookList extends Component {
         cursor: 'pointer',
       }
     }, {
-      dataField: 'author.fullName',
+      dataField: 'author.abr',
       text: 'Author',
       sort: true,
       events : {
@@ -135,7 +115,8 @@ class BookList extends Component {
       text: 'Genre'
     }, {
       dataField: 'published',
-      text: 'Published'
+      text: 'Published',
+      sort: true
     }]
 
     // Pagination options for BootstrapTable
@@ -152,9 +133,9 @@ class BookList extends Component {
       lastPageTitle: 'Last page',
       showTotal: false,
       sizePerPageList: [{
-        text: '5', value: 5
+        text: '20', value: 20
       }, {
-        text: '10', value: 10
+        text: '50', value: 50
       }, {
         text: 'All', value: books.length
       }]
@@ -180,7 +161,6 @@ class BookList extends Component {
           <div className="col-md-6">
             <input
               className='form-control'
-              style={ {} }
               ref={ n => input = n}
               type='text'
               placeholder="Search"

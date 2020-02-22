@@ -8,17 +8,8 @@ class Book extends Component {
     super(props)
     this.state = {
       // Dummy data books until API is linked
-      book: {
-        id: 1,
-        title: "Book 1",
-        description: "Description 1",
-        published: "02/22/2020",
-        genre: "Fantasy",
-        author: {
-          fullName: "Mall Op"
-        },
-      },
-      authors: [{fullName: "Mall Op"}, {fullName: "Paul Ron"}],
+      book: { author: {abr: ""}},
+      authors: [],
       isEditing: false
     }
     this._isMounted = false;
@@ -32,10 +23,12 @@ class Book extends Component {
   componentDidMount() {
     this._isMounted = true;
     // if component mounted, call api for list of books
-    console.log(this.props)
     axios.get(`/api/books/${this.props.match.params.id}`).then(response => {
       if(this._isMounted) {
         console.log(response)
+        this.setState({
+          book: response.data
+        })
       }
     })
   }
@@ -48,7 +41,6 @@ class Book extends Component {
     this.setState({
       isEditing: true
     })
-    console.log(this)
   }
 
   reloadBook() {
@@ -68,7 +60,6 @@ class Book extends Component {
 
   render() {
     const { book } = this.state
-    console.log(this.state.isEditing)
     if (this.state.isEditing) {
       return (
         // see https://getbootstrap.com/docs/4.0/layout/grid/ for more info on setting up grids
@@ -171,7 +162,7 @@ class Book extends Component {
                     </span>
                   </div>
                   <div className="col-md-12 book-author">
-                    { book.author.fullName }
+                    { book.author.abr }
                   </div>
                 </div>
                 <div className="card-body">
