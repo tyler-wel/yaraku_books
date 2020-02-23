@@ -38,7 +38,6 @@ class BookList extends Component {
     this.handleCreateNewBook = this.handleCreateNewBook.bind(this)
     this.handleFieldChange = this.handleFieldChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
-    this.getAllAuthors = this.getAllAuthors.bind(this)
     this.onRowSelect = this.onRowSelect.bind(this)
   }
 
@@ -55,11 +54,6 @@ class BookList extends Component {
         })
       }
     })
-    this.getAllAuthors()
-  }
-
-  getAllAuthors() {
-    console.log('getting authors')
     axios.get('/api/authors').then(response => {
       if(this._isMounted) {
         this.setState({
@@ -97,13 +91,6 @@ class BookList extends Component {
       published: this.state.published
     }
     axios.post('/api/books', book).then(response => {
-      console.log(response)
-      const books = [...this.state.books, response.data]
-      if (this._isMounted) {
-        this.setState({
-          books: books
-        })
-      }
       swal("Book Created!", "", "success").then((value) => {
         window.location.reload();
       })

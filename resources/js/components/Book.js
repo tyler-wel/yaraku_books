@@ -18,6 +18,11 @@ class Book extends Component {
         published: ""
       },
       authors: [],
+      titleInput: "",
+      authorInput: "",
+      descriptionInput: "",
+      genreInput: "",
+      publishedInput: "",
       isEditing: false
     }
     this._isMounted = false;
@@ -36,8 +41,21 @@ class Book extends Component {
     // if component mounted, call api for list of books
     axios.get(`/api/books/${this.props.match.params.id}`).then(response => {
       if(this._isMounted) {
+        console.log(response.data)
         this.setState({
-          book: response.data
+          book: response.data,
+          titleInput: response.data.title,
+          authorInput: response.data.author.fullName,
+          descriptionInput: response.data.description,
+          genreInput: response.data.genre,
+          publishedInput: response.data.published
+        })
+      }
+    })
+    axios.get('/api/authors').then(response => {
+      if(this._isMounted) {
+        this.setState({
+          authors: response.data
         })
       }
     })
@@ -72,15 +90,43 @@ class Book extends Component {
    */
   handleFieldChange(event) {
     this.setState({
-      [`this.book.${event.target.name}`]: event.target.value
+      [event.target.name]: event.target.value
     })
   }
 
   /**
    *
    */
-  saveBook() {
-
+  saveBook(event) {
+    event.preventDefault()
+    console.log('attempting to save book')
+    const author = this.state.authors.find( author => {
+      return this.state.book.author.fullName == author.fullName
+    })
+    let authorId = author.id
+    // If the new inputed name doesn't equal original name,
+    //  pass null ID to create a new author (author editing isn't implemented)
+    if (author.fullName !== this.state.authorInput) {
+      authorId = null;
+    }
+    const book = {
+      title: this.state.titleInput,
+      author_id: authorId,
+      author_name: this.state.authorInput,
+      genre: this.state.genreInput,
+      description: this.state.descriptionInput,
+      published: this.state.publishedInput
+    }
+    axios.put(`/api/books/${this.props.match.params.id}`, book).then(response => {
+      swal("Book Updated!", "", "success").then((value) => {
+        window.location.reload();
+      })
+    }).catch (error => {
+      console.error(error)
+      swal("An error has occured :(", "The book couldn't be updated", "error").then((value) => {
+        window.location.reload();
+      })
+    })
   }
 
   /**
@@ -107,8 +153,8 @@ class Book extends Component {
                           id='title'
                           className='form-control'
                           type='text'
-                          name='title'
-                          value={ book.title }
+                          name='titleInput'
+                          value={ this.state.titleInput }
                           onChange={this.handleFieldChange}
                           autoComplete="off"
                           placeholder="Enter Title"
@@ -119,9 +165,10 @@ class Book extends Component {
                       <div className="col-md-10">
                         <label htmlFor="author" className="info-label">Author</label>
                         <AutoComplete
+                          id='authorInput'
                           suggestions={this.state.authors}
                           origInput={ book.author }
-                          ref="auto-complete"
+                          onChange={this.handleFieldChange}
                         />
                       </div>
                     </div>
@@ -131,8 +178,8 @@ class Book extends Component {
                         <textarea
                           id='description'
                           className='form-control'
-                          name='description'
-                          value={ book.description }
+                          name='descriptionInput'
+                          value={ this.state.descriptionInput }
                           onChange={this.handleFieldChange}
                           autoComplete="off"
                           placeholder="Enter Description"
@@ -147,8 +194,8 @@ class Book extends Component {
                           id='genre'
                           className='form-control'
                           type='text'
-                          name='genre'
-                          value={ book.genre }
+                          name='genreInput'
+                          value={ this.state.genreInput }
                           onChange={this.handleFieldChange}
                           placeholder="Enter a Genre"
                         />
@@ -159,8 +206,8 @@ class Book extends Component {
                             id='published'
                             className='form-control'
                             type='date'
-                            name='published'
-                            value={ book.published }
+                            name='publishedInput'
+                            value={ this.state.publishedInput }
                             onChange={this.handleFieldChange}
                           />
                       </div>

@@ -74677,6 +74677,11 @@ function (_Component) {
         published: ""
       },
       authors: [],
+      titleInput: "",
+      authorInput: "",
+      descriptionInput: "",
+      genreInput: "",
+      publishedInput: "",
       isEditing: false
     };
     _this._isMounted = false;
@@ -74700,8 +74705,22 @@ function (_Component) {
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/books/".concat(this.props.match.params.id)).then(function (response) {
         if (_this2._isMounted) {
+          console.log(response.data);
+
           _this2.setState({
-            book: response.data
+            book: response.data,
+            titleInput: response.data.title,
+            authorInput: response.data.author.fullName,
+            descriptionInput: response.data.description,
+            genreInput: response.data.genre,
+            publishedInput: response.data.published
+          });
+        }
+      });
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/authors').then(function (response) {
+        if (_this2._isMounted) {
+          _this2.setState({
+            authors: response.data
           });
         }
       });
@@ -74741,7 +74760,7 @@ function (_Component) {
   }, {
     key: "handleFieldChange",
     value: function handleFieldChange(event) {
-      this.setState(_defineProperty({}, "this.book.".concat(event.target.name), event.target.value));
+      this.setState(_defineProperty({}, event.target.name, event.target.value));
     }
     /**
      *
@@ -74749,7 +74768,40 @@ function (_Component) {
 
   }, {
     key: "saveBook",
-    value: function saveBook() {}
+    value: function saveBook(event) {
+      var _this3 = this;
+
+      event.preventDefault();
+      console.log('attempting to save book');
+      var author = this.state.authors.find(function (author) {
+        return _this3.state.book.author.fullName == author.fullName;
+      });
+      var authorId = author.id; // If the new inputed name doesn't equal original name,
+      //  pass null ID to create a new author (author editing isn't implemented)
+
+      if (author.fullName !== this.state.authorInput) {
+        authorId = null;
+      }
+
+      var book = {
+        title: this.state.titleInput,
+        author_id: authorId,
+        author_name: this.state.authorInput,
+        genre: this.state.genreInput,
+        description: this.state.descriptionInput,
+        published: this.state.publishedInput
+      };
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("/api/books/".concat(this.props.match.params.id), book).then(function (response) {
+        swal("Book Updated!", "", "success").then(function (value) {
+          window.location.reload();
+        });
+      })["catch"](function (error) {
+        console.error(error);
+        swal("An error has occured :(", "The book couldn't be updated", "error").then(function (value) {
+          window.location.reload();
+        });
+      });
+    }
     /**
      *
      */
@@ -74786,8 +74838,8 @@ function (_Component) {
             id: "title",
             className: "form-control",
             type: "text",
-            name: "title",
-            value: book.title,
+            name: "titleInput",
+            value: this.state.titleInput,
             onChange: this.handleFieldChange,
             autoComplete: "off",
             placeholder: "Enter Title"
@@ -74799,9 +74851,10 @@ function (_Component) {
             htmlFor: "author",
             className: "info-label"
           }, "Author"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_AutoComplete__WEBPACK_IMPORTED_MODULE_2__["default"], {
+            id: "authorInput",
             suggestions: this.state.authors,
             origInput: book.author,
-            ref: "auto-complete"
+            onChange: this.handleFieldChange
           }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "row"
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -74812,8 +74865,8 @@ function (_Component) {
           }, "Description"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
             id: "description",
             className: "form-control",
-            name: "description",
-            value: book.description,
+            name: "descriptionInput",
+            value: this.state.descriptionInput,
             onChange: this.handleFieldChange,
             autoComplete: "off",
             placeholder: "Enter Description",
@@ -74829,8 +74882,8 @@ function (_Component) {
             id: "genre",
             className: "form-control",
             type: "text",
-            name: "genre",
-            value: book.genre,
+            name: "genreInput",
+            value: this.state.genreInput,
             onChange: this.handleFieldChange,
             placeholder: "Enter a Genre"
           })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -74842,8 +74895,8 @@ function (_Component) {
             id: "published",
             className: "form-control",
             type: "date",
-            name: "published",
-            value: book.published,
+            name: "publishedInput",
+            value: this.state.publishedInput,
             onChange: this.handleFieldChange
           }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "row"
@@ -74954,8 +75007,6 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
@@ -74963,6 +75014,8 @@ function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread n
 function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -75027,7 +75080,6 @@ function (_Component) {
     _this.handleCreateNewBook = _this.handleCreateNewBook.bind(_assertThisInitialized(_this));
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
     _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
-    _this.getAllAuthors = _this.getAllAuthors.bind(_assertThisInitialized(_this));
     _this.onRowSelect = _this.onRowSelect.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -75050,17 +75102,9 @@ function (_Component) {
           });
         }
       });
-      this.getAllAuthors();
-    }
-  }, {
-    key: "getAllAuthors",
-    value: function getAllAuthors() {
-      var _this3 = this;
-
-      console.log('getting authors');
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/authors').then(function (response) {
-        if (_this3._isMounted) {
-          _this3.setState({
+        if (_this2._isMounted) {
+          _this2.setState({
             authors: response.data
           });
         }
@@ -75083,13 +75127,13 @@ function (_Component) {
   }, {
     key: "handleCreateNewBook",
     value: function handleCreateNewBook(event) {
-      var _this4 = this;
+      var _this3 = this;
 
       event.preventDefault(); // This is a poor way to really handle finding existing author, would be better
       //  to implement a find_like, maybe String.search()
 
       var author = this.state.authors.find(function (author) {
-        return _this4.state.author == author.fullName;
+        return _this3.state.author == author.fullName;
       }); // if author was found, pass that author's id for relation
       // if author was not found, pass new name for creating new author
 
@@ -75101,15 +75145,6 @@ function (_Component) {
         published: this.state.published
       };
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/books', book).then(function (response) {
-        console.log(response);
-        var books = [].concat(_toConsumableArray(_this4.state.books), [response.data]);
-
-        if (_this4._isMounted) {
-          _this4.setState({
-            books: books
-          });
-        }
-
         sweetalert__WEBPACK_IMPORTED_MODULE_6___default()("Book Created!", "", "success").then(function (value) {
           window.location.reload();
         });
@@ -75184,7 +75219,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this4 = this;
 
       var books = this.state.books; // Columns for BootstrapTable
 
@@ -75195,7 +75230,7 @@ function (_Component) {
         events: {
           // When title row is clicked, redirect to book
           onClick: function onClick(e, column, columnIndex, row, rowIndex) {
-            _this5.setState({
+            _this4.setState({
               selectedBook: row.id,
               toBook: true
             });
@@ -75287,7 +75322,7 @@ function (_Component) {
           onClick: handleClick
         }, "Search")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "btn trash-btn col-md-2",
-          onClick: _this5.handleDelete
+          onClick: _this4.handleDelete
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
           className: "fa fa-trash"
         })));
