@@ -3,7 +3,12 @@ import fuzzysort from 'fuzzysort'
 import PropTypes from 'prop-types'
 
 /**
+ * Custom auto-completion component
  *
+ * @param origInput original input (when editing existing text)
+ * @param id id of the parent prop to affect
+ * @param suggestions list of auto-complete suggestions
+ * @param onChange callback function to parent
  */
 export class AutoComplete extends Component {
   constructor(props) {
@@ -21,14 +26,19 @@ export class AutoComplete extends Component {
     this.handleDocClick = this.handleDocClick.bind(this)
   }
 
-  /**
-   *
-   */
+  /** @inheritdoc */
   componentDidMount() {
     this._isMounted = true;
     document.addEventListener('click', this.handleDocClick)
   }
 
+  /**
+   * Custom document event handler for clicking outside of
+   *  the auto-complete box
+   * Thanks to:
+   * https://medium.com/@pitipatdop/little-neat-trick-to-capture-click-outside-react-component-5604830beb7f
+   * @param event
+   */
   handleDocClick(event) {
     if (document.getElementById('autocomplete-input').contains(event.target)) {
       const selected = event.target.innerText
@@ -52,17 +62,16 @@ export class AutoComplete extends Component {
     }
   }
 
-  /**
-   *
-   */
+  /** @inheritdoc */
   componentWillUnmount() {
     this._isMounted = false;
     document.removeEventListener('click', this.handleDocClick);
   }
 
   /**
+   * Event handler for when text is changed
    *
-   * @param {*} event
+   * @param event
    */
   onChange(event) {
     const input = event.target.value
@@ -80,11 +89,7 @@ export class AutoComplete extends Component {
     this.props.onChange({ target: { name: this.props.id, value: input } })
   }
 
-
-  /**
-   *
-   * TODO: courtesy of:
-   */
+  /** @inheritdoc */
   render() {
     const { isFocused } = this.state;
     let suggestionComponent;
@@ -112,7 +117,6 @@ export class AutoComplete extends Component {
       }
     }
 
-    // tracking click outside help https://medium.com/@pitipatdop/little-neat-trick-to-capture-click-outside-react-component-5604830beb7f
     return (
       <React.Fragment>
         <div id="autocomplete-input">

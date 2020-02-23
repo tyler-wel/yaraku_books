@@ -10,6 +10,6 @@ class Author extends Model
 
   // Author:Book 1:N
   public function books() {
-      return $this->hasMany(Book::Class);
+    return $this->hasMany(Book::Class);
   }
 }

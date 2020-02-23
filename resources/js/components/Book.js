@@ -4,14 +4,10 @@ import AutoComplete from './AutoComplete'
 import PropTypes from 'prop-types'
 import Swal from 'sweetalert2'
 
-/**
- *
- */
 class Book extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      // Dummy data books until API is linked
       book: {
         title: "",
         author: {fullName: ""},
@@ -34,13 +30,11 @@ class Book extends Component {
     this.switchToEdit = this.switchToEdit.bind(this)
   }
 
-  /**
-   *
-   */
+  /** @inheritdoc */
   componentDidMount() {
     this._isMounted = true;
-    // if component mounted, call api for list of books
     axios.get(`/api/books/${this.props.match.params.id}`).then(response => {
+    // if component mounted, update state
       if(this._isMounted) {
         console.log(response.data)
         this.setState({
@@ -62,15 +56,13 @@ class Book extends Component {
     })
   }
 
-  /**
-   *
-   */
+  /** @inheritdoc */
   componentWillUnmount() {
     this._isMounted = false;
   }
 
   /**
-   *
+   * Switch to editing mode
    */
   switchToEdit() {
     this.setState({
@@ -79,8 +71,9 @@ class Book extends Component {
   }
 
   /**
+   * Event handler for input changes
    *
-   * @param {*} event
+   * @param event
    */
   handleFieldChange(event) {
     this.setState({
@@ -89,11 +82,10 @@ class Book extends Component {
   }
 
   /**
-   *
+   * Save the book with the given information
    */
   saveBook(event) {
     event.preventDefault()
-    console.log('attempting to save book')
     const author = this.state.authors.find( author => {
       return this.state.book.author.fullName == author.fullName
     })
@@ -123,9 +115,7 @@ class Book extends Component {
     })
   }
 
-  /**
-   *
-   */
+  /** @inheritdoc */
   render() {
     const { book } = this.state
     if (this.state.isEditing) {

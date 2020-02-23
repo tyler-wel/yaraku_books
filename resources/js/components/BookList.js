@@ -11,9 +11,7 @@ import Swal from 'sweetalert2'
 import AutoComplete from './AutoComplete'
 import PropTypes from 'prop-types'
 
-/**
- *
- */
+/** @inheritdoc */
 class BookList extends Component {
   constructor(props) {
     super(props)
@@ -43,9 +41,7 @@ class BookList extends Component {
     this.handleDownload = this.handleDownload.bind(this)
   }
 
-  /**
-   *
-   */
+  /** @inheritdoc */
   componentDidMount() {
     this._isMounted = true;
     // if component mounted, call api for list of books
@@ -65,16 +61,15 @@ class BookList extends Component {
     })
   }
 
-  /**
-   *
-   */
+  /** @inheritdoc */
   componentWillUnmount() {
     this._isMounted = false;
   }
 
   /**
+   * Event handler for create button click, attempts to create a new book
    *
-   * @param {*} event
+   * @param event
    */
   handleCreateNewBook(event) {
     event.preventDefault()
@@ -105,13 +100,12 @@ class BookList extends Component {
   }
 
   /**
-   *C
-   * @param {*} event
+   * Event handler for delete button click, attempts to delete selected books
+   *
+   * @param event
    */
   handleDelete(event) {
     event.preventDefault()
-    console.log('attempting to delete')
-    console.log(this.state.selectedBooks)
     if(this.state.selectedBooks.length > 0) {
       axios.put('/api/books', this.state.selectedBooks).then(() => {
         Swal.fire("Books Deleted!", "", "success").then(() => {
@@ -127,11 +121,11 @@ class BookList extends Component {
   }
 
   /**
+   * Event handler for download button, open alert for download selection
    *
-   * @param {*} event
+   * @param event
    */
   handleDownload() {
-    console.log('handling download')
     ;(async () => {
       const { value: fileType } = await Swal.fire({
         title: 'Download CSV',
@@ -141,13 +135,11 @@ class BookList extends Component {
           books: 'Books',
           authors: 'Authors',
           booksWithAuthors: 'Books w/ Authors'
-          // authorsWithBooks: 'Authors w/ Books'
         },
         inputPlaceholder: 'Please Select File Type',
         showCancelButton: true,
       })
       if (fileType) {
-        console.log(fileType);
         axios({
           url: `/api/export/${fileType}`,
           responseType: 'blob'
@@ -165,6 +157,7 @@ class BookList extends Component {
   }
 
   /**
+   * Event handler for input changes
    *
    * @param {*} event
    */
@@ -175,6 +168,7 @@ class BookList extends Component {
   }
 
   /**
+   * Event handler for react-bootstrap-table row click, moves to book info screen for clicked book
    *
    * @param {*} row
    * @param {*} isSelected
@@ -194,9 +188,7 @@ class BookList extends Component {
     }
   }
 
-  /**
-   *
-   */
+  /** @inheritdoc */
   render() {
     const { books } = this.state
 
@@ -266,8 +258,9 @@ class BookList extends Component {
     }
 
     /**
+     * Custom search bar component for react-bootstrap-table
      *
-     * @param {*} props
+     * @param props
      */
     const CustomSearch = (props) => {
       let input;

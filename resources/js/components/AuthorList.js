@@ -1,14 +1,9 @@
 import axios from 'axios'
 import React, { Component } from 'react'
-// https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/getting-started.html
-// https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html - examples
 import BootstrapTable from 'react-bootstrap-table-next'
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 
-/**
- *
- */
 class AuthorList extends Component {
   constructor() {
     super()
@@ -18,9 +13,7 @@ class AuthorList extends Component {
     this._isMounted = false;
   }
 
-  /**
-   *
-   */
+  /** @inheritdoc */
   componentDidMount() {
     this._isMounted = true;
     // if component mounted, call api for list of books
@@ -33,16 +26,12 @@ class AuthorList extends Component {
     })
   }
 
-  /**
-   *
-   */
+  /** @inheritdoc */
   componentWillUnmount() {
     this._isMounted = false;
   }
 
-  /**
-   *
-   */
+  /** @inheritdoc */
   render() {
     const { authors } = this.state
 
@@ -85,8 +74,9 @@ class AuthorList extends Component {
     }
 
     /**
+     * Custom search bar component for react-bootstrap-table
      *
-     * @param {*} props
+     * @param props
      */
     const CustomSearch = (props) => {
       let input;
@@ -112,7 +102,6 @@ class AuthorList extends Component {
     }
 
     return (
-      // see https://getbootstrap.com/docs/4.0/layout/grid/ for more info on setting up grids
       <div className="container py-4">
         <div className="row justify-content-center">
           <div className="col-md-12">
