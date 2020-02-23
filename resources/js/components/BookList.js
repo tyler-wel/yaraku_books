@@ -9,16 +9,12 @@ import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-pa
 // Autocomplete courtesy of Mosh Hamedani https://programmingwithmosh.com/react/simple-react-autocomplete-component/
 import AutoComplete from './AutoComplete'
 
-const CancelToken = axios.CancelToken;
-const Source = CancelToken.source();
-
-
 /**
  *
  */
 class BookList extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       books: [],
       // authors for search suggestion
@@ -28,8 +24,11 @@ class BookList extends Component {
       selectedBook: null,
       // form control variables
       title: '',
+      author: '',
       genre: '',
       published: '',
+      // prop for whether creating is allowed
+      allowCreation: this.props.allowCreation
     }
     this._isMounted = false;
 
@@ -46,12 +45,19 @@ class BookList extends Component {
     // if component mounted, call api for list of books
     axios.get('/api/books').then(response => {
       if(this._isMounted) {
-        console.log(response)
         this.setState({
           books: response.data
         })
       }
     })
+    axios.get('/api/authors').then(response => {
+      if(this._isMounted) {
+        this.setState({
+          authors: response.data
+        })
+      }
+    })
+    console.log(this.refs)
   }
 
   /**
@@ -67,6 +73,10 @@ class BookList extends Component {
    */
   handleCreateNewBook(event) {
     event.preventDefault()
+    console.log(this.state.title)
+    console.log(this.state.author)
+    console.log(this.state.genre)
+    console.log(this.state.published)
     console.log('attempting to create')
   }
 
@@ -208,65 +218,69 @@ class BookList extends Component {
       <div className="container py-4">
         <div className="row justify-content-center">
           <div className="col-md-12">
-            <div className="card">
-              <div className="card-header">
-                <div className="d-flex justify-content-between align-items-center card-title">
-                  Create New Book
+            { this.state.allowCreation &&
+              <div className="card">
+                <div className="card-header">
+                  <div className="d-flex justify-content-between align-items-center card-title">
+                    Create New Book
+                  </div>
+                  <form onSubmit={this.handleCreateNewBook}>
+                    <div className="row">
+                      <div className='form-group col-md-6'>
+                        <label htmlFor="title" className="input-label">Title</label>
+                        <input
+                          id='title'
+                          className='form-control'
+                          type='text'
+                          name='title'
+                          value={this.state.title}
+                          onChange={this.handleFieldChange}
+                          autoComplete="off"
+                          placeholder="Enter Title"
+                          required
+                        />
+                      </div>
+                      <div className='form-group col-md-6'>
+                        <label htmlFor="author" className="input-label">Author</label>
+                        <AutoComplete
+                          suggestions={this.state.authors}
+                          id='author'
+                          onChange={this.handleFieldChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className='form-group  col-md-6'>
+                        <label htmlFor="genre" className="input-label">Genre</label>
+                        <input
+                          id='genre'
+                          className='form-control'
+                          type='text'
+                          name='genre'
+                          value={this.state.genre}
+                          onChange={this.handleFieldChange}
+                          placeholder="Enter Genre"
+                        />
+                      </div>
+                      <div className='form-group  col-md-6'>
+                        <label htmlFor="published" className="input-label">Published</label>
+                        <input
+                          id='published'
+                          className='form-control'
+                          type='date'
+                          name='published'
+                          value={this.state.published}
+                          onChange={this.handleFieldChange}
+                        />
+                      </div>
+                    </div>
+                    <div className='row'>
+                      <button className='btn btn-primary col-md-1 form-button'>Create</button>
+                    </div>
+                  </form>
                 </div>
-                <form onSubmit={this.handleCreateNewBook}>
-                  <div className="row">
-                    <div className='form-group col-md-6'>
-                      <label htmlFor="title" className="input-label">Title</label>
-                      <input
-                        id='title'
-                        className='form-control'
-                        type='text'
-                        name='title'
-                        value={this.state.title}
-                        onChange={this.handleFieldChange}
-                        autoComplete="off"
-                        placeholder="Enter Title"
-                        required
-                      />
-                    </div>
-                    <div className='form-group col-md-6'>
-                      <label htmlFor="author" className="input-label">Author</label>
-                      <AutoComplete
-                        suggestions={this.state.authors}
-                      />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className='form-group  col-md-6'>
-                      <label htmlFor="genre" className="input-label">Genre</label>
-                      <input
-                        id='genre'
-                        className='form-control'
-                        type='text'
-                        name='genre'
-                        value={this.state.genre}
-                        onChange={this.handleFieldChange}
-                        placeholder="Enter Genre"
-                      />
-                    </div>
-                    <div className='form-group  col-md-6'>
-                      <label htmlFor="published" className="input-label">Published</label>
-                      <input
-                        id='published'
-                        className='form-control'
-                        type='date'
-                        name='published'
-                        value={this.state.published}
-                        onChange={this.handleFieldChange}
-                      />
-                    </div>
-                  </div>
-                  <div className='row'>
-                    <button className='btn btn-primary col-md-1 form-button'>Create</button>
-                  </div>
-                </form>
               </div>
-            </div>
+            }
             <div className="card">
               <div className="card-header">
                 <div className="d-flex justify-content-between align-items-center card-title">

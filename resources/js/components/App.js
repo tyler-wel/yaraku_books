@@ -15,7 +15,7 @@ class App extends Component {
       <div>
         <Navbar />
         <Switch>
-          <Route exact path='/' component={BookList}/>
+          <Route exact path='/' render={ (props) => <BookList {...props} allowCreation={true}/> }/>
           <Route path='/books/:id' component={Book}/>
           <Route path='/authors' component={AuthorList}/>
         </Switch>

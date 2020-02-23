@@ -8,6 +8,7 @@ import React, { Component } from 'react';
 export class AutoComplete extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props)
     this.state = {
       activeSuggestion: 0,
       filteredSuggestions: [],
@@ -35,6 +36,8 @@ export class AutoComplete extends Component {
       userInput: input,
       suggestions: this.state.suggestions
     })
+    // simulate event for parent's handleFieldChange
+    this.props.onChange({ target: { name: this.props.id, value: input } })
   }
 
   /**
@@ -49,6 +52,8 @@ export class AutoComplete extends Component {
       userInput: event.target.innerText,
       suggestions: this.state.suggestions
     })
+    // simulate event for parent's handleFieldChange
+    this.props.onChange({ target: { name: this.props.id, value: input } })
   }
 
   /**
