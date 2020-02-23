@@ -101,7 +101,7 @@ class BookController extends Controller
   }
 
   /**
-   * Deletes existing book
+   * Deletes existing book - NOT USED
    *
    * @param int $id
    * @return int
@@ -109,6 +109,23 @@ class BookController extends Controller
   public function delete($id) {
     $book = Book::findOrFail($id);
     $book->delete();
+
+    return response()->json(null, 204);
+  }
+
+  /**
+   * Delete all books provided in request
+   *
+   * @param Request $request
+   * @return Response
+   */
+  public function deleteMany(Request $request) {
+    foreach ($request->get('ids') as $key => $value) {
+      Log::info($key);
+      Log::info($value);
+    }
+    // $book = Book::findOrFail($id);
+    // $book->delete();
 
     return response()->json(null, 204);
   }

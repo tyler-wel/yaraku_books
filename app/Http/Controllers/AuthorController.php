@@ -24,7 +24,7 @@ class AuthorController extends Controller
 
 
   /**
-   * Create new author
+   * Create new author - NOT USED
    *
    * @param Request $request
    * @return Response
@@ -58,7 +58,7 @@ class AuthorController extends Controller
   }
 
   /**
-   * Update an existing author
+   * Update an existing author - NOT USED
    *
    * @param Request $request
    * @param int $id
@@ -73,7 +73,7 @@ class AuthorController extends Controller
   }
 
   /**
-   * Deletes existing author
+   * Deletes existing author - NOT USED
    *
    * @param int $id
    * @return int
