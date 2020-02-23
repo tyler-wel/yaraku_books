@@ -123,15 +123,15 @@ class Book extends Component {
                     <div className="row">
                       <div className="col-md-10">
                         <label htmlFor="description" className="info-label">Description</label>
-                        <input
+                        <textarea
                           id='description'
                           className='form-control'
-                          type='text'
                           name='description'
                           value={this.state.book.description}
                           onChange={this.handleFieldChange}
                           autoComplete="off"
                           placeholder="Enter Description"
+                          rows="3"
                         />
                       </div>
                     </div>
@@ -185,20 +185,20 @@ class Book extends Component {
                     </span>
                   </div>
                   <div className="col-md-12 book-author">
-                    { book.author.abr }
+                    { book.author.fullName }
                   </div>
                 </div>
                 <div className="card-body">
                   <div className="row">
                     <div className="col-md-10">
                       <label htmlFor="description" className="info-label">Description</label>
-                      <input
+                      <textarea
                         id='description'
-                        className='form-control info-desc'
-                        type='text'
+                        className='form-control-plaintext info-desc'
                         name='description'
                         value={this.state.book.description}
-                        disabled
+                        rows="3"
+                        readonly
                       />
                     </div>
                   </div>
@@ -207,22 +207,22 @@ class Book extends Component {
                     <label htmlFor="genre" className="info-label">Genre</label>
                       <input
                         id='genre'
-                        className='form-control'
+                        className='form-control-plaintext'
                         type='text'
                         name='genre'
                         value={this.state.book.genre}
-                        disabled
+                        readonly
                       />
                     </div>
                     <div className="col-md-5">
                       <label htmlFor="published" className="info-label">Published</label>
                         <input
                           id='published'
-                          className='form-control'
+                          className='form-control-plaintext'
                           type='date'
                           name='published'
                           value={this.state.book.published}
-                          disabled
+                          readonly
                         />
                     </div>
                   </div>

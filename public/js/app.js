@@ -74122,6 +74122,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _AuthorList__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./AuthorList */ "./resources/js/components/AuthorList.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -74164,7 +74166,11 @@ function (_Component) {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["BrowserRouter"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Navbar__WEBPACK_IMPORTED_MODULE_3__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         exact: true,
         path: "/",
-        component: _BookList__WEBPACK_IMPORTED_MODULE_4__["default"]
+        render: function render(props) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_BookList__WEBPACK_IMPORTED_MODULE_4__["default"], _extends({}, props, {
+            allowCreation: true
+          }));
+        }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
         path: "/books/:id",
         component: _Book__WEBPACK_IMPORTED_MODULE_5__["default"]
@@ -74228,6 +74234,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+/**
+ *
+ */
 
 var AuthorList =
 /*#__PURE__*/
@@ -74246,6 +74255,10 @@ function (_Component) {
     _this._isMounted = false;
     return _this;
   }
+  /**
+   *
+   */
+
 
   _createClass(AuthorList, [{
     key: "componentDidMount",
@@ -74262,11 +74275,19 @@ function (_Component) {
         }
       });
     }
+    /**
+     *
+     */
+
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this._isMounted = false;
     }
+    /**
+     *
+     */
+
   }, {
     key: "render",
     value: function render() {
@@ -74309,6 +74330,10 @@ function (_Component) {
           value: authors.length
         }]
       };
+      /**
+       *
+       * @param {*} props
+       */
 
       var CustomSearch = function CustomSearch(props) {
         var input;
@@ -74388,8 +74413,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AutoComplete", function() { return AutoComplete; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -74408,9 +74431,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+// TODO comment on fuzzysort
 var fuzzysort = __webpack_require__(/*! fuzzysort */ "./node_modules/fuzzysort/fuzzysort.js");
 
 
+/**
+ *
+ */
 
 var AutoComplete =
 /*#__PURE__*/
@@ -74423,6 +74450,7 @@ function (_Component) {
     _classCallCheck(this, AutoComplete);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(AutoComplete).call(this, props));
+    console.log(_this.props);
     _this.state = {
       activeSuggestion: 0,
       filteredSuggestions: [],
@@ -74434,6 +74462,11 @@ function (_Component) {
     _this.onClick = _this.onClick.bind(_assertThisInitialized(_this));
     return _this;
   }
+  /**
+   *
+   * @param {*} event
+   */
+
 
   _createClass(AutoComplete, [{
     key: "onChange",
@@ -74451,8 +74484,20 @@ function (_Component) {
         showSuggestions: true,
         userInput: input,
         suggestions: this.state.suggestions
+      }); // simulate event for parent's handleFieldChange
+
+      this.props.onChange({
+        target: {
+          name: this.props.id,
+          value: input
+        }
       });
     }
+    /**
+     *
+     * @param {*} event
+     */
+
   }, {
     key: "onClick",
     value: function onClick(event) {
@@ -74462,17 +74507,30 @@ function (_Component) {
         showSuggestions: false,
         userInput: event.target.innerText,
         suggestions: this.state.suggestions
+      }); // simulate event for parent's handleFieldChange
+
+      this.props.onChange({
+        target: {
+          name: this.props.id,
+          value: input
+        }
       });
     }
+    /**
+     *
+     * TODO: courtesy of:
+     */
+
   }, {
     key: "render",
     value: function render() {
       var _this2 = this;
 
-      var suggestionComponent;
+      var suggestionComponent; // if input exists and we should be displaying
 
       if (this.state.showSuggestions && this.state.userInput) {
         if (this.state.filteredSuggestions.length) {
+          // return a component with a list of suggestions
           suggestionComponent = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
             className: "suggestions"
           }, this.state.filteredSuggestions.map(function (suggestion, index) {
@@ -74482,6 +74540,7 @@ function (_Component) {
             }, suggestion.target);
           }));
         } else {
+          // no suggestions, empty component
           suggestionComponent = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
             className: "no-suggestion"
           });
@@ -74518,8 +74577,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
-/* harmony import */ var _AutoComplete__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AutoComplete */ "./resources/js/components/AutoComplete.js");
+/* harmony import */ var _AutoComplete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AutoComplete */ "./resources/js/components/AutoComplete.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -74543,7 +74601,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-
+/**
+ *
+ */
 
 var Book =
 /*#__PURE__*/
@@ -74573,6 +74633,10 @@ function (_Component) {
     _this.switchToEdit = _this.switchToEdit.bind(_assertThisInitialized(_this));
     return _this;
   }
+  /**
+   *
+   */
+
 
   _createClass(Book, [{
     key: "componentDidMount",
@@ -74591,11 +74655,19 @@ function (_Component) {
         }
       });
     }
+    /**
+     *
+     */
+
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this._isMounted = false;
     }
+    /**
+     *
+     */
+
   }, {
     key: "switchToEdit",
     value: function switchToEdit() {
@@ -74603,20 +74675,36 @@ function (_Component) {
         isEditing: true
       });
     }
+    /**
+     *
+     */
+
   }, {
     key: "reloadBook",
-    value: function reloadBook() {} // handle input field changes
+    value: function reloadBook() {}
+    /**
+     *
+     * @param {*} event
+     */
 
   }, {
     key: "handleFieldChange",
     value: function handleFieldChange(event) {
       this.setState(_defineProperty({}, "this.book.".concat(event.target.name), event.target.value));
     }
+    /**
+     *
+     */
+
   }, {
     key: "saveBook",
     value: function saveBook() {
       console.log('saving book');
     }
+    /**
+     *
+     */
+
   }, {
     key: "render",
     value: function render() {
@@ -74661,7 +74749,7 @@ function (_Component) {
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
             htmlFor: "author",
             className: "info-label"
-          }, "Author"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_AutoComplete__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          }, "Author"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_AutoComplete__WEBPACK_IMPORTED_MODULE_2__["default"], {
             suggestions: this.state.authors,
             origInput: this.state.book.author,
             ref: "auto-complete"
@@ -74843,43 +74931,35 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  // Autocomplete courtesy of Mosh Hamedani https://programmingwithmosh.com/react/simple-react-autocomplete-component/
 
 
-var CancelToken = axios__WEBPACK_IMPORTED_MODULE_0___default.a.CancelToken;
-var Source = CancelToken.source();
+/**
+ *
+ */
 
 var BookList =
 /*#__PURE__*/
 function (_Component) {
   _inherits(BookList, _Component);
 
-  function BookList() {
+  function BookList(props) {
     var _this;
 
     _classCallCheck(this, BookList);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(BookList).call(this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(BookList).call(this, props));
     _this.state = {
-      // Dummy data for rendering before API
-      books: [{
-        title: "",
-        author: {
-          abr: ""
-        },
-        genre: "",
-        published: ""
-      }],
-      // authors for suggestion system
-      authors: [{
-        firstName: "",
-        lastName: "",
-        abr: ""
-      }],
+      books: [],
+      // authors for search suggestion
+      authors: [],
       // selected book and id for routing
       toBook: false,
       selectedBook: null,
       // form control variables
       title: '',
+      author: '',
       genre: '',
-      published: ''
+      published: '',
+      // prop for whether creating is allowed
+      allowCreation: _this.props.allowCreation
     };
     _this._isMounted = false;
     _this.handleCreateNewBook = _this.handleCreateNewBook.bind(_assertThisInitialized(_this));
@@ -74887,6 +74967,10 @@ function (_Component) {
     _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
     return _this;
   }
+  /**
+   *
+   */
+
 
   _createClass(BookList, [{
     key: "componentDidMount",
@@ -74897,47 +74981,73 @@ function (_Component) {
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/books').then(function (response) {
         if (_this2._isMounted) {
-          console.log(response);
-
           _this2.setState({
             books: response.data
           });
         }
       });
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/authors').then(function (response) {
+        if (_this2._isMounted) {
+          console.log(response);
+
+          _this2.setState({
+            authors: response.data
+          });
+        }
+      });
+      console.log(this.refs);
     }
+    /**
+     *
+     */
+
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this._isMounted = false;
-    } // handle book creation
+    }
+    /**
+     *
+     * @param {*} event
+     */
 
   }, {
     key: "handleCreateNewBook",
     value: function handleCreateNewBook(event) {
       event.preventDefault();
       console.log('attempting to create');
-    } // handle selected book deletion
+    }
+    /**
+     *
+     * @param {*} event
+     */
 
   }, {
     key: "handleDelete",
     value: function handleDelete(event) {
       event.preventDefault();
       console.log('attempting to delete');
-    } // handle input field changes
+    }
+    /**
+     *
+     * @param {*} event
+     */
 
   }, {
     key: "handleFieldChange",
     value: function handleFieldChange(event) {
       this.setState(_defineProperty({}, event.target.name, event.target.value));
     }
+    /**
+     *
+     */
+
   }, {
     key: "render",
     value: function render() {
       var _this3 = this;
 
-      var books = this.state.books; // BootstrapTable search bar
-
-      var SearchBar = react_bootstrap_table2_toolkit__WEBPACK_IMPORTED_MODULE_4__["Search"].SearchBar; // Columns for BootstrapTable
+      var books = this.state.books; // Columns for BootstrapTable
 
       var columns = [{
         dataField: 'title',
@@ -75012,6 +75122,11 @@ function (_Component) {
           }
         });
       }
+      /**
+       *
+       * @param {*} props
+       */
+
 
       var CustomSearch = function CustomSearch(props) {
         var input;
@@ -75055,7 +75170,7 @@ function (_Component) {
           className: "row justify-content-center"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "col-md-12"
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        }, this.state.allowCreation && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "card"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "card-header"
@@ -75086,7 +75201,9 @@ function (_Component) {
           htmlFor: "author",
           className: "input-label"
         }, "Author"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_AutoComplete__WEBPACK_IMPORTED_MODULE_6__["default"], {
-          suggestions: this.state.authors
+          suggestions: this.state.authors,
+          id: "author",
+          onChange: this.handleFieldChange
         }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "row"
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
