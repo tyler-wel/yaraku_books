@@ -1,6 +1,8 @@
 import axios from 'axios'
 import React, { Component } from 'react'
 import AutoComplete from './AutoComplete'
+import PropTypes from 'prop-types'
+import Swal from 'sweetalert2'
 
 /**
  *
@@ -27,7 +29,6 @@ class Book extends Component {
     }
     this._isMounted = false;
 
-    this.reloadBook = this.reloadBook.bind(this)
     this.saveBook = this.saveBook.bind(this)
     this.handleFieldChange = this.handleFieldChange.bind(this)
     this.switchToEdit = this.switchToEdit.bind(this)
@@ -79,13 +80,6 @@ class Book extends Component {
 
   /**
    *
-   */
-  reloadBook() {
-
-  }
-
-  /**
-   *
    * @param {*} event
    */
   handleFieldChange(event) {
@@ -117,13 +111,13 @@ class Book extends Component {
       description: this.state.descriptionInput,
       published: this.state.publishedInput
     }
-    axios.put(`/api/books/${this.props.match.params.id}`, book).then(response => {
-      swal("Book Updated!", "", "success").then((value) => {
+    axios.put(`/api/books/${this.props.match.params.id}`, book).then(() => {
+      Swal.fire("Book Updated!", "", "success").then(() => {
         window.location.reload();
       })
     }).catch (error => {
       console.error(error)
-      swal("An error has occured :(", "The book couldn't be updated", "error").then((value) => {
+      Swal.fire("An error has occured :(", "The book couldn't be updated", "error").then(() => {
         window.location.reload();
       })
     })
@@ -286,6 +280,10 @@ class Book extends Component {
       )
     }
   }
+}
+
+Book.propTypes = {
+
 }
 
 export default Book

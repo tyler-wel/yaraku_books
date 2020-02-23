@@ -4,10 +4,11 @@ namespace App\Exports;
 
 use App\Author;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Log;
 
 class AuthorsExport implements FromCollection {
   /**
+  * Return a collection of authors
+  *
   * @return \Illuminate\Support\Collection
   */
   public function collection() {

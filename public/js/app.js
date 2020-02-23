@@ -78227,6 +78227,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AutoComplete", function() { return AutoComplete; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var fuzzysort__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! fuzzysort */ "./node_modules/fuzzysort/fuzzysort.js");
+/* harmony import */ var fuzzysort__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(fuzzysort__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -78245,8 +78249,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-// TODO comment on fuzzysort
-var fuzzysort = __webpack_require__(/*! fuzzysort */ "./node_modules/fuzzysort/fuzzysort.js");
+
 
 
 /**
@@ -78343,7 +78346,7 @@ function (_Component) {
     value: function onChange(event) {
       var input = event.target.value;
       var suggestions = this.props.suggestions;
-      var filtered = fuzzysort.go(input, suggestions, {
+      var filtered = fuzzysort__WEBPACK_IMPORTED_MODULE_1___default.a.go(input, suggestions, {
         limit: 6,
         allowTypo: false,
         key: 'fullName'
@@ -78382,7 +78385,7 @@ function (_Component) {
           // return a component with a list of suggestions
           suggestionComponent = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
             className: "suggestions"
-          }, this.state.filteredSuggestions.map(function (suggestion, index) {
+          }, this.state.filteredSuggestions.map(function (suggestion) {
             return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
               key: suggestion.target
             }, suggestion.target);
@@ -78411,6 +78414,12 @@ function (_Component) {
 
   return AutoComplete;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+AutoComplete.propTypes = {
+  origInput: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.object,
+  onChange: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.func.isRequired,
+  id: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.string.isRequired,
+  suggestions: prop_types__WEBPACK_IMPORTED_MODULE_2___default.a.array.isRequired
+};
 /* harmony default export */ __webpack_exports__["default"] = (AutoComplete);
 
 /***/ }),
@@ -78429,6 +78438,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _AutoComplete__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./AutoComplete */ "./resources/js/components/AutoComplete.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_4__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -78448,6 +78461,8 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
 
 
 
@@ -78487,7 +78502,6 @@ function (_Component) {
       isEditing: false
     };
     _this._isMounted = false;
-    _this.reloadBook = _this.reloadBook.bind(_assertThisInitialized(_this));
     _this.saveBook = _this.saveBook.bind(_assertThisInitialized(_this));
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
     _this.switchToEdit = _this.switchToEdit.bind(_assertThisInitialized(_this));
@@ -78549,13 +78563,6 @@ function (_Component) {
     }
     /**
      *
-     */
-
-  }, {
-    key: "reloadBook",
-    value: function reloadBook() {}
-    /**
-     *
      * @param {*} event
      */
 
@@ -78593,13 +78600,13 @@ function (_Component) {
         description: this.state.descriptionInput,
         published: this.state.publishedInput
       };
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("/api/books/".concat(this.props.match.params.id), book).then(function (response) {
-        swal("Book Updated!", "", "success").then(function (value) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("/api/books/".concat(this.props.match.params.id), book).then(function () {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire("Book Updated!", "", "success").then(function () {
           window.location.reload();
         });
       })["catch"](function (error) {
         console.error(error);
-        swal("An error has occured :(", "The book couldn't be updated", "error").then(function (value) {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_4___default.a.fire("An error has occured :(", "The book couldn't be updated", "error").then(function () {
           window.location.reload();
         });
       });
@@ -78778,6 +78785,7 @@ function (_Component) {
   return Book;
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
+Book.propTypes = {};
 /* harmony default export */ __webpack_exports__["default"] = (Book);
 
 /***/ }),
@@ -78807,6 +78815,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
 /* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _AutoComplete__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./AutoComplete */ "./resources/js/components/AutoComplete.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_9__);
 
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -78854,6 +78864,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
  // Autocomplete courtesy of Mosh Hamedani https://programmingwithmosh.com/react/simple-react-autocomplete-component/
 
 
+
 /**
  *
  */
@@ -78892,7 +78903,6 @@ function (_Component) {
     _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
     _this.onRowSelect = _this.onRowSelect.bind(_assertThisInitialized(_this));
     _this.handleDownload = _this.handleDownload.bind(_assertThisInitialized(_this));
-    _this.test = _this.test.bind(_assertThisInitialized(_this));
     return _this;
   }
   /**
@@ -78956,13 +78966,13 @@ function (_Component) {
         genre: this.state.genre,
         published: this.state.published
       };
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/books', book).then(function (response) {
-        sweetalert2__WEBPACK_IMPORTED_MODULE_7___default.a.fire("Book Created!", "", "success").then(function (result) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.post('/api/books', book).then(function () {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_7___default.a.fire("Book Created!", "", "success").then(function () {
           window.location.reload();
         });
       })["catch"](function (error) {
         console.error(error);
-        sweetalert2__WEBPACK_IMPORTED_MODULE_7___default.a.fire("An error has occured :(", "Your book couldn't be created", "error").then(function (result) {
+        sweetalert2__WEBPACK_IMPORTED_MODULE_7___default.a.fire("An error has occured :(", "Your book couldn't be created", "error").then(function () {
           window.location.reload();
         });
       });
@@ -78980,13 +78990,13 @@ function (_Component) {
       console.log(this.state.selectedBooks);
 
       if (this.state.selectedBooks.length > 0) {
-        axios__WEBPACK_IMPORTED_MODULE_1___default.a.put('/api/books', this.state.selectedBooks).then(function (response) {
-          sweetalert2__WEBPACK_IMPORTED_MODULE_7___default.a.fire("Books Deleted!", "", "success").then(function (result) {
+        axios__WEBPACK_IMPORTED_MODULE_1___default.a.put('/api/books', this.state.selectedBooks).then(function () {
+          sweetalert2__WEBPACK_IMPORTED_MODULE_7___default.a.fire("Books Deleted!", "", "success").then(function () {
             window.location.reload();
           });
         })["catch"](function (error) {
           console.error(error);
-          sweetalert2__WEBPACK_IMPORTED_MODULE_7___default.a.fire("An error has occured :(", "The books couldn't be deleted...", "error").then(function (result) {
+          sweetalert2__WEBPACK_IMPORTED_MODULE_7___default.a.fire("An error has occured :(", "The books couldn't be deleted...", "error").then(function () {
             window.location.reload();
           });
         });
@@ -78999,7 +79009,7 @@ function (_Component) {
 
   }, {
     key: "handleDownload",
-    value: function handleDownload(event) {
+    value: function handleDownload() {
       console.log('handling download');
 
       _asyncToGenerator(
@@ -79053,11 +79063,6 @@ function (_Component) {
           }
         }, _callee);
       }))();
-    }
-  }, {
-    key: "test",
-    value: function test() {
-      console.log('downloading');
     }
     /**
      *
@@ -79122,11 +79127,7 @@ function (_Component) {
       }, {
         dataField: 'author.abr',
         text: 'Author',
-        sort: true,
-        events: {
-          onClick: function onClick(e, column, columnIndex, row, rowIndex) {}
-        },
-        style: {}
+        sort: true
       }, {
         dataField: 'genre',
         text: 'Genre'
@@ -79161,6 +79162,7 @@ function (_Component) {
       }; // Component for redirecting to selected book using react-router-dom
 
       if (this.state.toBook && this.state.selectedBook !== null) {
+        console.log(this.state.selectedBook);
         return react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Redirect"], {
           to: {
             pathname: "/books/".concat(this.state.selectedBook),
@@ -79318,6 +79320,9 @@ function (_Component) {
   return BookList;
 }(react__WEBPACK_IMPORTED_MODULE_2__["Component"]);
 
+BookList.propTypes = {
+  allowCreation: prop_types__WEBPACK_IMPORTED_MODULE_9___default.a.bool
+};
 /* harmony default export */ __webpack_exports__["default"] = (BookList);
 
 /***/ }),

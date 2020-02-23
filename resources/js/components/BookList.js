@@ -9,6 +9,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import Swal from 'sweetalert2'
 // Autocomplete courtesy of Mosh Hamedani https://programmingwithmosh.com/react/simple-react-autocomplete-component/
 import AutoComplete from './AutoComplete'
+import PropTypes from 'prop-types'
 
 /**
  *
@@ -40,7 +41,6 @@ class BookList extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.onRowSelect = this.onRowSelect.bind(this)
     this.handleDownload = this.handleDownload.bind(this)
-    this.test = this.test.bind(this)
   }
 
   /**
@@ -92,13 +92,13 @@ class BookList extends Component {
       genre: this.state.genre,
       published: this.state.published
     }
-    axios.post('/api/books', book).then(response => {
-      Swal.fire("Book Created!", "", "success").then((result) => {
+    axios.post('/api/books', book).then(() => {
+      Swal.fire("Book Created!", "", "success").then(() => {
         window.location.reload();
       })
     }).catch (error => {
       console.error(error)
-      Swal.fire("An error has occured :(", "Your book couldn't be created", "error").then((result) => {
+      Swal.fire("An error has occured :(", "Your book couldn't be created", "error").then(() => {
         window.location.reload();
       })
     })
@@ -113,13 +113,13 @@ class BookList extends Component {
     console.log('attempting to delete')
     console.log(this.state.selectedBooks)
     if(this.state.selectedBooks.length > 0) {
-      axios.put('/api/books', this.state.selectedBooks).then(response => {
-        Swal.fire("Books Deleted!", "", "success").then((result) => {
+      axios.put('/api/books', this.state.selectedBooks).then(() => {
+        Swal.fire("Books Deleted!", "", "success").then(() => {
           window.location.reload();
         })
       }).catch (error => {
         console.error(error)
-        Swal.fire("An error has occured :(", "The books couldn't be deleted...", "error").then((result) => {
+        Swal.fire("An error has occured :(", "The books couldn't be deleted...", "error").then(() => {
           window.location.reload();
         })
       })
@@ -130,7 +130,7 @@ class BookList extends Component {
    *
    * @param {*} event
    */
-  handleDownload(event) {
+  handleDownload() {
     console.log('handling download')
     ;(async () => {
       const { value: fileType } = await Swal.fire({
@@ -162,10 +162,6 @@ class BookList extends Component {
         }))
       }
     })();
-  }
-
-  test() {
-    console.log('downloading')
   }
 
   /**
@@ -227,14 +223,6 @@ class BookList extends Component {
       dataField: 'author.abr',
       text: 'Author',
       sort: true,
-      events : {
-        onClick: (e, column, columnIndex, row, rowIndex) => {
-
-        }
-      },
-      style: {
-
-      }
     }, {
       dataField: 'genre',
       text: 'Genre'
@@ -268,6 +256,7 @@ class BookList extends Component {
 
     // Component for redirecting to selected book using react-router-dom
     if (this.state.toBook && this.state.selectedBook !== null) {
+      console.log(this.state.selectedBook )
       return <Redirect
                 to={{
                   pathname: `/books/${this.state.selectedBook}`,
@@ -418,4 +407,7 @@ class BookList extends Component {
   }
 }
 
+BookList.propTypes = {
+  allowCreation: PropTypes.bool
+}
 export default BookList

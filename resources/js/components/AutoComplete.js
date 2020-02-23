@@ -1,6 +1,6 @@
-// TODO comment on fuzzysort
-const fuzzysort = require('fuzzysort')
 import React, { Component } from 'react';
+import fuzzysort from 'fuzzysort'
+import PropTypes from 'prop-types'
 
 /**
  *
@@ -94,7 +94,7 @@ export class AutoComplete extends Component {
         // return a component with a list of suggestions
         suggestionComponent = (
           <ul className="suggestions">
-            {this.state.filteredSuggestions.map((suggestion, index) => {
+            {this.state.filteredSuggestions.map((suggestion) => {
               return (
                 <li key={suggestion.target} >
                   {suggestion.target}
@@ -129,6 +129,13 @@ export class AutoComplete extends Component {
       </React.Fragment>
     )
   }
+}
+
+AutoComplete.propTypes = {
+  origInput: PropTypes.object,
+  onChange: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  suggestions: PropTypes.array.isRequired
 }
 
 export default AutoComplete;
