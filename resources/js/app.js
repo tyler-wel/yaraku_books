@@ -4,7 +4,7 @@
  * building robust, powerful web applications using React + Laravel.
  */
 
-require('./bootstrap');
+require('./bootstrap')
 
 /**
  * Next, we will create a fresh React component instance and attach it to
@@ -14,6 +14,6 @@ require('./bootstrap');
 
 require('./components/App')
 require('react-bootstrap-table-next/dist/react-bootstrap-table2.min.css')
-require('react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css');
-require('react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css');
+require('react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css')
+require('react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css')
 require('@fortawesome/fontawesome-free/js/all.js')

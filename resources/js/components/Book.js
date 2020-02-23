@@ -23,7 +23,7 @@ class Book extends Component {
       publishedInput: "",
       isEditing: false
     }
-    this._isMounted = false;
+    this._isMounted = false
 
     this.saveBook = this.saveBook.bind(this)
     this.handleFieldChange = this.handleFieldChange.bind(this)
@@ -32,7 +32,7 @@ class Book extends Component {
 
   /** @inheritdoc */
   componentDidMount() {
-    this._isMounted = true;
+    this._isMounted = true
     axios.get(`/api/books/${this.props.match.params.id}`).then(response => {
     // if component mounted, update state
       if(this._isMounted) {
@@ -58,7 +58,7 @@ class Book extends Component {
 
   /** @inheritdoc */
   componentWillUnmount() {
-    this._isMounted = false;
+    this._isMounted = false
   }
 
   /**
@@ -93,7 +93,7 @@ class Book extends Component {
     // If the new inputed name doesn't equal original name,
     //  pass null ID to create a new author (author editing isn't implemented)
     if (author.fullName !== this.state.authorInput) {
-      authorId = null;
+      authorId = null
     }
     const book = {
       title: this.state.titleInput,
@@ -105,12 +105,12 @@ class Book extends Component {
     }
     axios.put(`/api/books/${this.props.match.params.id}`, book).then(() => {
       Swal.fire("Book Updated!", "", "success").then(() => {
-        window.location.reload();
+        window.location.reload()
       })
     }).catch (error => {
       console.error(error)
       Swal.fire("An error has occured :(", "The book couldn't be updated", "error").then(() => {
-        window.location.reload();
+        window.location.reload()
       })
     })
   }

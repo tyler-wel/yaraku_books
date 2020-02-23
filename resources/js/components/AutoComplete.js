@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import fuzzysort from 'fuzzysort'
 import PropTypes from 'prop-types'
 
@@ -12,7 +12,7 @@ import PropTypes from 'prop-types'
  */
 export class AutoComplete extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       activeSuggestion: 0,
       filteredSuggestions: [],
@@ -21,14 +21,14 @@ export class AutoComplete extends Component {
       // is focused on autocomplete element
       isFocused: false
     }
-    this._isMounted = false;
-    this.onChange = this.onChange.bind(this);
+    this._isMounted = false
+    this.onChange = this.onChange.bind(this)
     this.handleDocClick = this.handleDocClick.bind(this)
   }
 
   /** @inheritdoc */
   componentDidMount() {
-    this._isMounted = true;
+    this._isMounted = true
     document.addEventListener('click', this.handleDocClick)
   }
 
@@ -64,8 +64,8 @@ export class AutoComplete extends Component {
 
   /** @inheritdoc */
   componentWillUnmount() {
-    this._isMounted = false;
-    document.removeEventListener('click', this.handleDocClick);
+    this._isMounted = false
+    document.removeEventListener('click', this.handleDocClick)
   }
 
   /**
@@ -91,8 +91,8 @@ export class AutoComplete extends Component {
 
   /** @inheritdoc */
   render() {
-    const { isFocused } = this.state;
-    let suggestionComponent;
+    const { isFocused } = this.state
+    let suggestionComponent
     // if input exists and we should be displaying
     if (this.state.showSuggestions && this.state.userInput && isFocused) {
       if (this.state.filteredSuggestions.length) {
@@ -104,7 +104,7 @@ export class AutoComplete extends Component {
                 <li key={suggestion.target} >
                   {suggestion.target}
                 </li>
-              );
+              )
             })}
           </ul>
         )
@@ -113,7 +113,7 @@ export class AutoComplete extends Component {
         suggestionComponent = (
           <div className="no-suggestion">
           </div>
-        );
+        )
       }
     }
 
@@ -142,4 +142,4 @@ AutoComplete.propTypes = {
   suggestions: PropTypes.array.isRequired
 }
 
-export default AutoComplete;
+export default AutoComplete

@@ -4,8 +4,8 @@ import { Redirect } from 'react-router-dom'
 // https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/getting-started.html
 // https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html - examples
 import BootstrapTable from 'react-bootstrap-table-next'
-import ToolkitProvider from 'react-bootstrap-table2-toolkit';
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import ToolkitProvider from 'react-bootstrap-table2-toolkit'
+import paginationFactory from 'react-bootstrap-table2-paginator'
 import Swal from 'sweetalert2'
 // Autocomplete courtesy of Mosh Hamedani https://programmingwithmosh.com/react/simple-react-autocomplete-component/
 import AutoComplete from './AutoComplete'
@@ -32,7 +32,7 @@ class BookList extends Component {
       // prop for whether creating is allowed
       allowCreation: this.props.allowCreation
     }
-    this._isMounted = false;
+    this._isMounted = false
 
     this.handleCreateNewBook = this.handleCreateNewBook.bind(this)
     this.handleFieldChange = this.handleFieldChange.bind(this)
@@ -43,7 +43,7 @@ class BookList extends Component {
 
   /** @inheritdoc */
   componentDidMount() {
-    this._isMounted = true;
+    this._isMounted = true
     // if component mounted, call api for list of books
     axios.get('/api/books').then(response => {
       if(this._isMounted) {
@@ -63,7 +63,7 @@ class BookList extends Component {
 
   /** @inheritdoc */
   componentWillUnmount() {
-    this._isMounted = false;
+    this._isMounted = false
   }
 
   /**
@@ -89,12 +89,12 @@ class BookList extends Component {
     }
     axios.post('/api/books', book).then(() => {
       Swal.fire("Book Created!", "", "success").then(() => {
-        window.location.reload();
+        window.location.reload()
       })
     }).catch (error => {
       console.error(error)
       Swal.fire("An error has occured :(", "Your book couldn't be created", "error").then(() => {
-        window.location.reload();
+        window.location.reload()
       })
     })
   }
@@ -109,12 +109,12 @@ class BookList extends Component {
     if(this.state.selectedBooks.length > 0) {
       axios.put('/api/books', this.state.selectedBooks).then(() => {
         Swal.fire("Books Deleted!", "", "success").then(() => {
-          window.location.reload();
+          window.location.reload()
         })
       }).catch (error => {
         console.error(error)
         Swal.fire("An error has occured :(", "The books couldn't be deleted...", "error").then(() => {
-          window.location.reload();
+          window.location.reload()
         })
       })
     }
@@ -126,7 +126,7 @@ class BookList extends Component {
    * @param event
    */
   handleDownload() {
-    ;(async () => {
+    (async () => {
       const { value: fileType } = await Swal.fire({
         title: 'Download CSV',
         input: 'select',
@@ -145,15 +145,15 @@ class BookList extends Component {
           responseType: 'blob'
         }).then((response => {
           const url = window.URL.createObjectURL(new Blob([response.data]))
-          const link = document.createElement('a');
-          link.href = url;
+          const link = document.createElement('a')
+          link.href = url
           // timestamp help https://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
-          link.setAttribute('download', `${fileType}_${Date.now() / 1000 | 0}.csv`);
-          document.body.appendChild(link);
-          link.click();
+          link.setAttribute('download', `${fileType}_${Date.now() / 1000 | 0}.csv`)
+          document.body.appendChild(link)
+          link.click()
         }))
       }
-    })();
+    })()
   }
 
   /**
@@ -263,10 +263,10 @@ class BookList extends Component {
      * @param props
      */
     const CustomSearch = (props) => {
-      let input;
+      let input
       const handleClick = () => {
         props.onSearch(input.value)
-      };
+      }
       return (
         <div className="row search-row">
           <div className="col-md-6">
@@ -294,7 +294,7 @@ class BookList extends Component {
     const selectRow = {
       mode: 'checkbox',
       onSelect: this.onRowSelect
-    };
+    }
 
     return (
       // see https://getbootstrap.com/docs/4.0/layout/grid/ for more info on setting up grids

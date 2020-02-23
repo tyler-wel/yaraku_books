@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React, { Component } from 'react'
 import BootstrapTable from 'react-bootstrap-table-next'
-import ToolkitProvider from 'react-bootstrap-table2-toolkit';
-import paginationFactory from 'react-bootstrap-table2-paginator';
+import ToolkitProvider from 'react-bootstrap-table2-toolkit'
+import paginationFactory from 'react-bootstrap-table2-paginator'
 
 class AuthorList extends Component {
   constructor() {
@@ -10,12 +10,12 @@ class AuthorList extends Component {
     this.state = {
       authors: [],
     }
-    this._isMounted = false;
+    this._isMounted = false
   }
 
   /** @inheritdoc */
   componentDidMount() {
-    this._isMounted = true;
+    this._isMounted = true
     // if component mounted, call api for list of books
     axios.get('/api/authors').then(response => {
       if(this._isMounted) {
@@ -28,7 +28,7 @@ class AuthorList extends Component {
 
   /** @inheritdoc */
   componentWillUnmount() {
-    this._isMounted = false;
+    this._isMounted = false
   }
 
   /** @inheritdoc */
@@ -79,10 +79,10 @@ class AuthorList extends Component {
      * @param props
      */
     const CustomSearch = (props) => {
-      let input;
+      let input
       const handleClick = () => {
         props.onSearch(input.value)
-      };
+      }
       return (
         <div className="row search-row">
           <div className="col-md-6">
