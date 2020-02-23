@@ -105,19 +105,6 @@ class BookController extends Controller {
   }
 
   /**
-   * Deletes existing book - NOT USED
-   *
-   * @param int $id
-   * @return int
-   */
-  public function delete($id) {
-    $book = Book::findOrFail($id);
-    $book->delete();
-
-    return response()->json(null, 204);
-  }
-
-  /**
    * Delete all books provided in request
    *
    * @param Request $request
@@ -133,8 +120,6 @@ class BookController extends Controller {
 
 
   // Helper classes
-  //  is this the correct way to do it in php? hmm
-
   /**
    *
    */
@@ -155,4 +140,14 @@ class BookController extends Controller {
     }
     return $author;
   }
+
+  /**
+   * Deprecated but keeping code
+   */
+  // public function delete($id) {
+  //   $book = Book::findOrFail($id);
+  //   $book->delete();
+
+  //   return response()->json(null, 204);
+  // }
 }

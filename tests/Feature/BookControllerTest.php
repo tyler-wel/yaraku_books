@@ -24,7 +24,15 @@ class BookControllerTest extends TestCase
     $response = $this->get('/api/books');
     $response
       ->assertStatus(200)
-      ->assertJsonCount($this->bookCount);
+      ->assertJsonCount($this->bookCount)
+      ->assertJsonStructure([ '*' => [
+        "id",
+        "title",
+        "description",
+        "genre",
+        "published",
+        "author",
+      ]]);
   }
 
   /**

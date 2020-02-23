@@ -41,30 +41,6 @@ class AuthorController extends Controller {
     return response()->json($authors, 200);
   }
 
-
-  /**
-   * Create new author - NOT USED
-   *
-   * @param Request $request
-   * @return Response
-   */
-  public function store(Request $request) {
-    $validatedData = $request->validate([
-      'firstName' => 'required',
-      'lastName' => 'required',
-      'abr' => 'required'
-    ]);
-
-    $author = Author::create([
-      'firstName' => $validatedData['firstName'],
-      'lastName' => $validatedData['lastName'],
-      'fullName' => $validatedData['firstName'] . " " . $validatedData['lastName'],
-      'abr' => $validatedData['abr']
-    ]);
-
-    return response()->json($author, 201);
-  }
-
   /**
    * Show specific author
    *
@@ -76,31 +52,38 @@ class AuthorController extends Controller {
     return response()->json($author, 200);
   }
 
-  /**
-   * Update an existing author - NOT USED
-   *
-   * @param Request $request
-   * @param int $id
-   * @return Author
-   */
-  public function update(Request $request, $id) {
-    $author = Author::findOrFail($id);
-    $author->update($request->all());
-    $author->fullName = $author.firstName . " " . $author.lastName;
-    $author->save();
-    return response()->json($author, 200);
-  }
 
   /**
-   * Deletes existing author - NOT USED
-   *
-   * @param int $id
-   * @return int
+   * Deprecated but keeping code
    */
-  public function delete($id) {
-    $author = Author::findOrFail($id);
-    $author->delete();
+  // public function update(Request $request, $id) {
+  //   $author = Author::findOrFail($id);
+  //   $author->update($request->all());
+  //   $author->fullName = $author.firstName . " " . $author.lastName;
+  //   $author->save();
+  //   return response()->json($author, 200);
+  // }
 
-    return response()->json(null, 204);
-  }
+  // public function delete($id) {
+  //   $author = Author::findOrFail($id);
+  //   $author->delete();
+
+  //   return response()->json(null, 204);
+  // }
+  // public function store(Request $request) {
+  //   $validatedData = $request->validate([
+  //   'firstName' => 'required',
+  //   'lastName' => 'required',
+  //   'abr' => 'required'
+  //   ]);
+
+  //   $author = Author::create([
+  //   'firstName' => $validatedData['firstName'],
+  //   'lastName' => $validatedData['lastName'],
+  //   'fullName' => $validatedData['firstName'] . " " . $validatedData['lastName'],
+  //   'abr' => $validatedData['abr']
+  //   ]);
+
+  //   return response()->json($author, 201);
+  // }
 }
