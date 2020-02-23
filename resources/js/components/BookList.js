@@ -23,6 +23,8 @@ class BookList extends Component {
       // selected book and id for routing
       toBook: false,
       selectedBook: null,
+      // the selected book rows
+      selectedBooks: [],
       // form control variables
       title: '',
       author: '',
@@ -37,6 +39,7 @@ class BookList extends Component {
     this.handleFieldChange = this.handleFieldChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.getAllAuthors = this.getAllAuthors.bind(this)
+    this.onRowSelect = this.onRowSelect.bind(this)
   }
 
   /**
@@ -106,6 +109,9 @@ class BookList extends Component {
       })
     }).catch (error => {
       console.error(error)
+      swal("An error has occured :(", "Your book couldn't be created", "error").then((value) => {
+        window.location.reload();
+      })
     })
   }
 
@@ -116,6 +122,19 @@ class BookList extends Component {
   handleDelete(event) {
     event.preventDefault()
     console.log('attempting to delete')
+    console.log(this.state.selectedBooks)
+    if(this.state.selectedBooks.length > 0) {
+      axios.put('/api/books', this.state.selectedBooks).then(response => {
+        swal("Books Deleted!", "", "success").then((value) => {
+          window.location.reload();
+        })
+      }).catch (error => {
+        console.error(error)
+        swal("An error has occured :(", "The books couldn't be deleted...", "error").then((value) => {
+          window.location.reload();
+        })
+      })
+    }
   }
 
   /**
@@ -126,6 +145,26 @@ class BookList extends Component {
     this.setState({
       [event.target.name]: event.target.value
     })
+  }
+
+  /**
+   *
+   * @param {*} row
+   * @param {*} isSelected
+   */
+  onRowSelect(row, isSelected) {
+    if (isSelected) {
+      this.setState({
+        selectedBooks: [...this.state.selectedBooks, row]
+      })
+    } else {
+      const filteredBooks = this.state.selectedBooks.filter( book => {
+        return book.id !== row.id
+      })
+      this.setState({
+        selectedBooks: filteredBooks
+      })
+    }
   }
 
   /**
@@ -237,7 +276,8 @@ class BookList extends Component {
 
     // checkbox for row selection
     const selectRow = {
-      mode: 'checkbox'
+      mode: 'checkbox',
+      onSelect: this.onRowSelect
     };
 
     return (

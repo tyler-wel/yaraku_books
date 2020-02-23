@@ -75013,6 +75013,8 @@ function (_Component) {
       // selected book and id for routing
       toBook: false,
       selectedBook: null,
+      // the selected book rows
+      selectedBooks: [],
       // form control variables
       title: '',
       author: '',
@@ -75026,6 +75028,7 @@ function (_Component) {
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
     _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
     _this.getAllAuthors = _this.getAllAuthors.bind(_assertThisInitialized(_this));
+    _this.onRowSelect = _this.onRowSelect.bind(_assertThisInitialized(_this));
     return _this;
   }
   /**
@@ -75112,6 +75115,9 @@ function (_Component) {
         });
       })["catch"](function (error) {
         console.error(error);
+        sweetalert__WEBPACK_IMPORTED_MODULE_6___default()("An error has occured :(", "Your book couldn't be created", "error").then(function (value) {
+          window.location.reload();
+        });
       });
     }
     /**
@@ -75124,6 +75130,20 @@ function (_Component) {
     value: function handleDelete(event) {
       event.preventDefault();
       console.log('attempting to delete');
+      console.log(this.state.selectedBooks);
+
+      if (this.state.selectedBooks.length > 0) {
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.put('/api/books', this.state.selectedBooks).then(function (response) {
+          sweetalert__WEBPACK_IMPORTED_MODULE_6___default()("Books Deleted!", "", "success").then(function (value) {
+            window.location.reload();
+          });
+        })["catch"](function (error) {
+          console.error(error);
+          sweetalert__WEBPACK_IMPORTED_MODULE_6___default()("An error has occured :(", "The books couldn't be deleted...", "error").then(function (value) {
+            window.location.reload();
+          });
+        });
+      }
     }
     /**
      *
@@ -75134,6 +75154,28 @@ function (_Component) {
     key: "handleFieldChange",
     value: function handleFieldChange(event) {
       this.setState(_defineProperty({}, event.target.name, event.target.value));
+    }
+    /**
+     *
+     * @param {*} row
+     * @param {*} isSelected
+     */
+
+  }, {
+    key: "onRowSelect",
+    value: function onRowSelect(row, isSelected) {
+      if (isSelected) {
+        this.setState({
+          selectedBooks: [].concat(_toConsumableArray(this.state.selectedBooks), [row])
+        });
+      } else {
+        var filteredBooks = this.state.selectedBooks.filter(function (book) {
+          return book.id !== row.id;
+        });
+        this.setState({
+          selectedBooks: filteredBooks
+        });
+      }
     }
     /**
      *
@@ -75253,7 +75295,8 @@ function (_Component) {
 
 
       var selectRow = {
-        mode: 'checkbox'
+        mode: 'checkbox',
+        onSelect: this.onRowSelect
       };
       return (// see https://getbootstrap.com/docs/4.0/layout/grid/ for more info on setting up grids
         react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {

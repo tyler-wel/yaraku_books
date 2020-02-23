@@ -23,7 +23,7 @@ Route::post('books', 'BookController@store');
 Route::get('books/{id}', 'BookController@show');
 Route::put('books/{id}', 'BookController@update');
 // Route::delete('books/{id}', 'BookController@delete');
-Route::delete('books', 'BookController@deleteMany');
+Route::put('books', 'BookController@deleteMany');
 
 Route::get('authors', 'AuthorController@index');
 // Route::post('authors', 'AuthorController@store');

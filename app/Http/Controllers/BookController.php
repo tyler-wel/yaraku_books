@@ -120,13 +120,10 @@ class BookController extends Controller
    * @return Response
    */
   public function deleteMany(Request $request) {
-    foreach ($request->get('ids') as $key => $value) {
-      Log::info($key);
-      Log::info($value);
+    foreach ($request->all() as $value) {
+      $book = Book::findOrFail($value['id']);
+      $book->delete();
     }
-    // $book = Book::findOrFail($id);
-    // $book->delete();
-
     return response()->json(null, 204);
   }
 }
