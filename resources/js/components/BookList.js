@@ -4,8 +4,9 @@ import { Redirect } from 'react-router-dom'
 // https://react-bootstrap-table.github.io/react-bootstrap-table2/docs/getting-started.html
 // https://react-bootstrap-table.github.io/react-bootstrap-table2/storybook/index.html - examples
 import BootstrapTable from 'react-bootstrap-table-next'
-import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
-import paginationFactory, { PaginationProvider } from 'react-bootstrap-table2-paginator';
+import ToolkitProvider from 'react-bootstrap-table2-toolkit';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+import swal from 'sweetalert'
 // Autocomplete courtesy of Mosh Hamedani https://programmingwithmosh.com/react/simple-react-autocomplete-component/
 import AutoComplete from './AutoComplete'
 
@@ -100,9 +101,9 @@ class BookList extends Component {
           books: books
         })
       }
-      // Lazy handling if a new author was added
-      //  reload all authors
-      this.getAllAuthors()
+      swal("Book Created!", "", "success").then((value) => {
+        window.location.reload();
+      })
     }).catch (error => {
       console.error(error)
     })
