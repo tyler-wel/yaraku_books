@@ -38,7 +38,8 @@ class AuthorController extends Controller
 
     $author = Author::create([
       'firstName' => $validatedData['firstName'],
-      'lastName' => $validatedData['abr'],
+      'lastName' => $validatedData['lastName'],
+      'fullName' => $validatedData['firstName'] . " " . $validatedData['lastName'],
       'abr' => $validatedData['abr']
     ]);
 
@@ -66,7 +67,8 @@ class AuthorController extends Controller
   public function update(Request $request, $id) {
     $author = Author::findOrFail($id);
     $author->update($request->all());
-
+    $author->fullName = $author.firstName . " " . $author.lastName;
+    $author->save();
     return response()->json($author, 200);
   }
 

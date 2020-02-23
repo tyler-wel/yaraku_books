@@ -7,17 +7,20 @@ php artisan serve --port=8181  # run laravel server
 
 ## Commands
 
-### php artisan
+### Make 
 php artisan make:model {Model} -m
   - -m specifies to create migration
 
-php artisan migrate
-
-php artisan migrate:fresh --seed
+php artisan make:migration {migration_name}
 
 php artisan make:controller ModelController
 
 php artisan make:seeder UsersTableSeeder
+
+### Artisan
+php artisan migrate
+
+php artisan migrate:fresh --seed
 
 php artisan db:seed --class=UsersTableSeeder
   - --class is optional

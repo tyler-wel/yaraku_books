@@ -32,6 +32,7 @@ $factory->define(Author::class, function (Faker $faker) {
   return [
     'firstName' => $firstName,
     'lastName' => $lastName,
+    'fullName' => $firstName . " " . $lastName,
     'abr' => substr($firstName, 0, 1) . ". " . $lastName,
   ];
 });
