@@ -36,7 +36,6 @@ class Book extends Component {
     axios.get(`/api/books/${this.props.match.params.id}`).then(response => {
     // if component mounted, update state
       if(this._isMounted) {
-        console.log(response.data)
         this.setState({
           book: response.data,
           titleInput: response.data.title,

@@ -248,7 +248,6 @@ class BookList extends Component {
 
     // Component for redirecting to selected book using react-router-dom
     if (this.state.toBook && this.state.selectedBook !== null) {
-      console.log(this.state.selectedBook )
       return <Redirect
                 to={{
                   pathname: `/books/${this.state.selectedBook}`,

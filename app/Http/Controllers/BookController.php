@@ -61,7 +61,7 @@ class BookController extends Controller {
     $book = Book::create([
       'title' => $validatedData['title'],
       'author_id' => $this->getAuthor($author, $request)->id,
-      'description' => '',
+      'description' => 'None',
       'genre' => $request->get('genre'),
       'published' => $published
     ]);
