@@ -8,16 +8,33 @@ import React, { Component } from 'react';
 export class AutoComplete extends Component {
   constructor(props) {
     super(props);
+    console.log('%c autocomplete props', 'color:pink')
     console.log(this.props)
     this.state = {
       activeSuggestion: 0,
       filteredSuggestions: [],
       showSuggestions: false,
       userInput: this.props.origInput ? this.props.origInput.fullName : '',
-      suggestions: this.props.suggestions
+      isFocused: false
     }
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.handleBlur = this.handleBlur.bind(this)
+    this.handleFocus = this.handleFocus.bind(this)
+  }
+
+  /**
+   *
+   */
+  handleFocus() {
+    this.setState({ isFocused: true })
+  }
+
+  /**
+   *
+   */
+  handleBlur() {
+    this.setState({ isFocused: false })
   }
 
   /**
@@ -26,7 +43,7 @@ export class AutoComplete extends Component {
    */
   onChange(event) {
     const input = event.target.value
-    const suggestions = this.state.suggestions
+    const suggestions = this.props.suggestions
     const filtered = fuzzysort.go(input, suggestions, {limit: 6, allowTypo: false, key: 'fullName'})
 
     this.setState({
@@ -34,7 +51,6 @@ export class AutoComplete extends Component {
       filteredSuggestions: filtered,
       showSuggestions: true,
       userInput: input,
-      suggestions: this.state.suggestions
     })
     // simulate event for parent's handleFieldChange
     this.props.onChange({ target: { name: this.props.id, value: input } })
@@ -50,7 +66,6 @@ export class AutoComplete extends Component {
       filteredSuggestions: [],
       showSuggestions: false,
       userInput: event.target.innerText,
-      suggestions: this.state.suggestions
     })
     // simulate event for parent's handleFieldChange
     this.props.onChange({ target: { name: this.props.id, value: input } })
@@ -61,9 +76,11 @@ export class AutoComplete extends Component {
    * TODO: courtesy of:
    */
   render() {
+    const { isFocused } = this.state;
     let suggestionComponent;
     // if input exists and we should be displaying
-    if (this.state.showSuggestions && this.state.userInput) {
+    console.log(isFocused)
+    if (this.state.showSuggestions && this.state.userInput && isFocused) {
       if (this.state.filteredSuggestions.length) {
         // return a component with a list of suggestions
         suggestionComponent = (
@@ -94,6 +111,8 @@ export class AutoComplete extends Component {
           value={this.state.userInput}
           className='form-control'
           placeholder='Enter Author'
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
           required
         />
         {suggestionComponent}
