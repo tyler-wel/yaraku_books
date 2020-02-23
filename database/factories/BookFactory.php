@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Book;
+use App\Author;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
@@ -17,15 +18,7 @@ use Illuminate\Support\Str;
 |
 */
 
-class BookFaker extends \Faker\Provider\Base {
-  public function title($nbWords = 3) {
-    $sentence = $this->generator->sentence($nbWords);
-    return substr($sentence, 0, strlen($sentence) - 1);
-  }
-}
-
 $factory->define(Book::class, function (Faker $faker) {
-  $faker->addProvider(new BookFaker($faker));
   $genres = array(
     'Fiction',
     'Non-Fiction',
@@ -39,8 +32,8 @@ $factory->define(Book::class, function (Faker $faker) {
   $randNumber = rand(0,7);
 
   return [
-    'title' => $faker->title,
-    'author_id' => factory(App\Author::class),
+    'title' => $faker->sentence(2),
+    'author_id' => factory(Author::class)->create()->id,
     'description' => $faker->text,
     'genre' => $genres[$randNumber],
     'published' => $faker->date

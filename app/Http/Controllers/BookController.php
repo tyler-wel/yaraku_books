@@ -24,7 +24,6 @@ class BookController extends Controller {
    *
    */
   public function exportWithAuthors() {
-    Log::info('export with authors');
     return Excel::download(new BooksWithAuthorsExport, 'booksWithAuthors.csv');
   }
 
