@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom'
 import BootstrapTable from 'react-bootstrap-table-next'
 import ToolkitProvider from 'react-bootstrap-table2-toolkit';
 import paginationFactory from 'react-bootstrap-table2-paginator';
-import swal from 'sweetalert'
+import Swal from 'sweetalert2'
 // Autocomplete courtesy of Mosh Hamedani https://programmingwithmosh.com/react/simple-react-autocomplete-component/
 import AutoComplete from './AutoComplete'
 
@@ -39,6 +39,8 @@ class BookList extends Component {
     this.handleFieldChange = this.handleFieldChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.onRowSelect = this.onRowSelect.bind(this)
+    this.handleDownload = this.handleDownload.bind(this)
+    this.test = this.test.bind(this)
   }
 
   /**
@@ -91,12 +93,12 @@ class BookList extends Component {
       published: this.state.published
     }
     axios.post('/api/books', book).then(response => {
-      swal("Book Created!", "", "success").then((value) => {
+      Swal.fire("Book Created!", "", "success").then((result) => {
         window.location.reload();
       })
     }).catch (error => {
       console.error(error)
-      swal("An error has occured :(", "Your book couldn't be created", "error").then((value) => {
+      Swal.fire("An error has occured :(", "Your book couldn't be created", "error").then((result) => {
         window.location.reload();
       })
     })
@@ -112,16 +114,58 @@ class BookList extends Component {
     console.log(this.state.selectedBooks)
     if(this.state.selectedBooks.length > 0) {
       axios.put('/api/books', this.state.selectedBooks).then(response => {
-        swal("Books Deleted!", "", "success").then((value) => {
+        Swal.fire("Books Deleted!", "", "success").then((result) => {
           window.location.reload();
         })
       }).catch (error => {
         console.error(error)
-        swal("An error has occured :(", "The books couldn't be deleted...", "error").then((value) => {
+        Swal.fire("An error has occured :(", "The books couldn't be deleted...", "error").then((result) => {
           window.location.reload();
         })
       })
     }
+  }
+
+  /**
+   *
+   * @param {*} event
+   */
+  handleDownload(event) {
+    console.log('handling download')
+    ;(async () => {
+      const { value: fileType } = await Swal.fire({
+        title: 'Download CSV',
+        input: 'select',
+        text: "File will download to system's downloads folder",
+        inputOptions: {
+          books: 'Books',
+          authors: 'Authors',
+          booksWithAuthors: 'Books w/ Authors'
+          // authorsWithBooks: 'Authors w/ Books'
+        },
+        inputPlaceholder: 'Please Select File Type',
+        showCancelButton: true,
+      })
+      if (fileType) {
+        console.log(fileType);
+        axios({
+          url: `/api/export/${fileType}`,
+          responseType: 'blob'
+        }).then((response => {
+          const url = window.URL.createObjectURL(new Blob([response.data]))
+          const link = document.createElement('a');
+          link.href = url;
+          // timestamp help https://stackoverflow.com/questions/221294/how-do-you-get-a-timestamp-in-javascript
+          link.setAttribute('download', `${fileType}_${Date.now() / 1000 | 0}.csv`);
+          document.body.appendChild(link);
+          link.click();
+        }))
+      }
+    })();
+  }
+
+  test() {
+    console.log('downloading')
   }
 
   /**
@@ -254,8 +298,11 @@ class BookList extends Component {
           <div className="col-md-4">
             <button className='btn btn-primary' onClick={ handleClick }>Search</button>
           </div>
-          <div className="btn trash-btn col-md-2" onClick={ this.handleDelete }>
+          <div className="btn trash-btn col" onClick={ this.handleDelete }>
             <i className="fa fa-trash"></i>
+          </div>
+          <div className="btn download col" onClick={ this.handleDownload }>
+            <i className="fa fa-download"></i>
           </div>
         </div>
       )

@@ -39,6 +39,7 @@
     "react-bootstrap-table2-paginator": "^2.1.0",
     "react-bootstrap-table2-toolkit": "^2.1.2",
     "react-router-dom": "^5.1.2",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^9.8.2"
   }
 }

@@ -6,9 +6,28 @@ use App\Author;
 use App\Book;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Log;
+use App\Exports\AuthorsExport;
+use App\Exports\AuthorWithBooksExport;
+use Maatwebsite\Excel\Facades\Excel;
 
-class AuthorController extends Controller
-{
+class AuthorController extends Controller {
+
+  /**
+   *
+   */
+  public function export() {
+    return Excel::download(new AuthorsExport, 'authors.csv');
+  }
+
+  /**
+   *
+   */
+  public function exportWithBooks($id) {
+    Log::warning($id);
+    return Excel::download(new AuthorWithBooksExport($id), 'authorWithBook.csv');
+  }
+
   /**
    * Lists all authors
    *

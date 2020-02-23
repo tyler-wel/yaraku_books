@@ -9,17 +9,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
-// [class*='col-'] {
-//   &:first-child {
-//     background-color: rgb(240, 238, 146);
-//   }
-//   background-color: rgb(0, 247, 255);
-// }
-
-.input-label {
-
-}
-
 .form-group {
   margin-bottom: 0.25rem;
 }
@@ -35,7 +24,10 @@
 
 .trash-btn {
   text-align: end;
-  padding-right: 1rem;
+}
+
+.trash-btn {
+  padding-left: 0.5rem;
 }
 
 .card-title {
@@ -98,4 +90,13 @@
   [class*='col-'] {
 
   }
+}
+
+.download-btn {
+  border: 0;
+  border-radius: .25em;
+  background: initial;
+  background-color: #cccccc;
+  color: #000;
+  font-size: 0.97em;
 }

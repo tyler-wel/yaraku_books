@@ -10902,7 +10902,10 @@ a.text-dark:focus {
 
 .trash-btn {
   text-align: end;
-  padding-right: 1rem;
+}
+
+.trash-btn {
+  padding-left: 0.5rem;
 }
 
 .card-title {
@@ -10966,5 +10969,14 @@ a.text-dark:focus {
 
 .book-info .info-desc {
   margin-bottom: 1rem;
+}
+
+.download-btn {
+  border: 0;
+  border-radius: .25em;
+  background: initial;
+  background-color: #cccccc;
+  color: #000;
+  font-size: 0.97em;
 }
 

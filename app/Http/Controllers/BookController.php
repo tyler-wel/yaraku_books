@@ -7,9 +7,27 @@ use App\Book;
 use Illuminate\Http\Request;
 use Log;
 use Carbon\Carbon;
+use App\Exports\BooksExport;
+use App\Exports\BooksWithAuthorsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
-class BookController extends Controller
-{
+class BookController extends Controller {
+
+  /**
+   *
+   */
+  public function export() {
+    return Excel::download(new BooksExport, 'books.csv');
+  }
+
+  /**
+   *
+   */
+  public function exportWithAuthors() {
+    Log::info('export with authors');
+    return Excel::download(new BooksWithAuthorsExport, 'booksWithAuthors.csv');
+  }
+
     /**
    * Lists all books
    *
