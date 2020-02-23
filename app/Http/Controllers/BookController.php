@@ -6,6 +6,7 @@ use App\Author;
 use App\Book;
 use Illuminate\Http\Request;
 use Log;
+use Carbon\Carbon;
 
 class BookController extends Controller
 {
@@ -27,22 +28,47 @@ class BookController extends Controller
    * @return Response
    */
   public function store(Request $request) {
+    Log::info($request);
+
     $validatedData = $request->validate([
       'title' => 'required',
-      'description' => 'required'
     ]);
 
+    $author = Author::find($request->get('author_id'));
+    $published = $request->get('published');
+    // This is probably not a very good way to handle publishing,
+    //  if I had more time I would make this nullable
+    if($published == null) {
+      $published = Carbon::now();
+    }
+    if($author == null) {
+      // Because input is not validated, this is possibly a big no-no
+      //  potential for many errors, but for now it works
+      $fullName = $request->get('author_name');
+      Log::warning($fullName);
+      $names = explode(' ', $fullName);
+      $firstName = $names[0];
+      $lastName = count($names) > 1 ? $names[1] : "";
+      Log::warning(count($names));
+      $author = Author::create([
+        'firstName' => $firstName,
+        'lastName' => $lastName,
+        'fullName' => $fullName,
+        'abr' => substr($firstName, 0, 1) . ". " . $lastName,
+      ]);
+    }
+
+    // I forgot to add description textarea to create screen
+    //  description will be left empty on creation
     $book = Book::create([
       'title' => $validatedData['title'],
-      'description' => $validatedData['description'],
+      'author_id' => $author->id,
+      'description' => '',
       'genre' => $request->get('genre'),
-      'published' => $request->get('published')
+      'published' => $published
     ]);
 
-    // Associate the book to the passed in Author
-    // Should be required, TODO: figure out association validation for request
-    $book->author()->associate($request->author());
-
+    Log::info($book);
     $book->save();
 
     return response()->json($book, 201);
@@ -55,7 +81,6 @@ class BookController extends Controller
    * @return Response
    */
   public function show($id) {
-    Log::info($id);
     $book = Book::with('author')->findOrFail($id);
     return response()->json($book, 200);
   }

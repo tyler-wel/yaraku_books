@@ -35,6 +35,7 @@ class BookList extends Component {
     this.handleCreateNewBook = this.handleCreateNewBook.bind(this)
     this.handleFieldChange = this.handleFieldChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.getAllAuthors = this.getAllAuthors.bind(this)
   }
 
   /**
@@ -50,6 +51,11 @@ class BookList extends Component {
         })
       }
     })
+    this.getAllAuthors()
+  }
+
+  getAllAuthors() {
+    console.log('getting authors')
     axios.get('/api/authors').then(response => {
       if(this._isMounted) {
         this.setState({
@@ -57,7 +63,6 @@ class BookList extends Component {
         })
       }
     })
-    console.log(this.refs)
   }
 
   /**
@@ -73,15 +78,38 @@ class BookList extends Component {
    */
   handleCreateNewBook(event) {
     event.preventDefault()
-    console.log(this.state.title)
-    console.log(this.state.author)
-    console.log(this.state.genre)
-    console.log(this.state.published)
-    console.log('attempting to create')
+    // This is a poor way to really handle finding existing author, would be better
+    //  to implement a find_like, maybe String.search()
+    const author = this.state.authors.find( author => {
+      return this.state.author == author.fullName
+    })
+    // if author was found, pass that author's id for relation
+    // if author was not found, pass new name for creating new author
+    const book = {
+      title: this.state.title,
+      author_id: author == null ? null : author.id,
+      author_name: author == null ? this.state.author : null,
+      genre: this.state.genre,
+      published: this.state.published
+    }
+    axios.post('/api/books', book).then(response => {
+      console.log(response)
+      const books = [...this.state.books, response.data]
+      if (this._isMounted) {
+        this.setState({
+          books: books
+        })
+      }
+      // Lazy handling if a new author was added
+      //  reload all authors
+      this.getAllAuthors()
+    }).catch (error => {
+      console.error(error)
+    })
   }
 
   /**
-   *
+   *C
    * @param {*} event
    */
   handleDelete(event) {
@@ -114,8 +142,6 @@ class BookList extends Component {
       events: {
         // When title row is clicked, redirect to book
         onClick: (e, column, columnIndex, row, rowIndex) => {
-          console.log(column)
-          console.log(row)
           this.setState({
             selectedBook: row.id,
             toBook: true
@@ -132,7 +158,7 @@ class BookList extends Component {
       sort: true,
       events : {
         onClick: (e, column, columnIndex, row, rowIndex) => {
-          console.log(row)
+
         }
       },
       style: {
@@ -202,7 +228,7 @@ class BookList extends Component {
             <button className='btn btn-primary' onClick={ handleClick }>Search</button>
           </div>
           <div className="btn trash-btn col-md-2" onClick={ this.handleDelete }>
-            <i class="fa fa-trash"></i>
+            <i className="fa fa-trash"></i>
           </div>
         </div>
       )

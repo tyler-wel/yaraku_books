@@ -10,7 +10,13 @@ class Book extends Component {
     super(props)
     this.state = {
       // Dummy data books until API is linked
-      book: { author: {abr: ""}},
+      book: {
+        title: "",
+        author: {fullName: ""},
+        description: "",
+        genre: "",
+        published: ""
+      },
       authors: [],
       isEditing: false
     }
@@ -30,7 +36,6 @@ class Book extends Component {
     // if component mounted, call api for list of books
     axios.get(`/api/books/${this.props.match.params.id}`).then(response => {
       if(this._isMounted) {
-        console.log(response)
         this.setState({
           book: response.data
         })
@@ -75,7 +80,7 @@ class Book extends Component {
    *
    */
   saveBook() {
-    console.log('saving book')
+
   }
 
   /**
@@ -103,7 +108,7 @@ class Book extends Component {
                           className='form-control'
                           type='text'
                           name='title'
-                          value={this.state.book.title}
+                          value={ book.title }
                           onChange={this.handleFieldChange}
                           autoComplete="off"
                           placeholder="Enter Title"
@@ -115,7 +120,7 @@ class Book extends Component {
                         <label htmlFor="author" className="info-label">Author</label>
                         <AutoComplete
                           suggestions={this.state.authors}
-                          origInput={this.state.book.author}
+                          origInput={ book.author }
                           ref="auto-complete"
                         />
                       </div>
@@ -127,7 +132,7 @@ class Book extends Component {
                           id='description'
                           className='form-control'
                           name='description'
-                          value={this.state.book.description}
+                          value={ book.description }
                           onChange={this.handleFieldChange}
                           autoComplete="off"
                           placeholder="Enter Description"
@@ -136,14 +141,14 @@ class Book extends Component {
                       </div>
                     </div>
                     <div className="row">
-                    <div className="col-md-5">
-                      <label htmlFor="genre" className="info-label">Genre</label>
+                      <div className="col-md-5">
+                        <label htmlFor="genre" className="info-label">Genre</label>
                         <input
                           id='genre'
                           className='form-control'
                           type='text'
                           name='genre'
-                          value={this.state.book.genre}
+                          value={ book.genre }
                           onChange={this.handleFieldChange}
                           placeholder="Enter a Genre"
                         />
@@ -155,7 +160,7 @@ class Book extends Component {
                             className='form-control'
                             type='date'
                             name='published'
-                            value={this.state.book.published}
+                            value={ book.published }
                             onChange={this.handleFieldChange}
                           />
                       </div>
@@ -196,9 +201,9 @@ class Book extends Component {
                         id='description'
                         className='form-control-plaintext info-desc'
                         name='description'
-                        value={this.state.book.description}
+                        value={ book.description }
                         rows="3"
-                        readonly
+                        disabled
                       />
                     </div>
                   </div>
@@ -210,8 +215,8 @@ class Book extends Component {
                         className='form-control-plaintext'
                         type='text'
                         name='genre'
-                        value={this.state.book.genre}
-                        readonly
+                        value={ book.genre }
+                        disabled
                       />
                     </div>
                     <div className="col-md-5">
@@ -221,8 +226,8 @@ class Book extends Component {
                           className='form-control-plaintext'
                           type='date'
                           name='published'
-                          value={this.state.book.published}
-                          readonly
+                          value={ book.published }
+                          disabled
                         />
                     </div>
                   </div>

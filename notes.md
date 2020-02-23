@@ -27,7 +27,7 @@ php artisan db:seed --class=UsersTableSeeder
 
 php artisan serve --host=localhost --port=8181
 
-### npm 
+### NPM
 
 **hot-reloading**
 npm run hot
@@ -36,3 +36,6 @@ npm run hot
 docker build -t {my_image} .
 docker image ls
 docker run {my_image}
+
+### ESlint
+./node_modules/.bin/eslint {yourfile.js}

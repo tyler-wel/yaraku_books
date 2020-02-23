@@ -8,33 +8,56 @@ import React, { Component } from 'react';
 export class AutoComplete extends Component {
   constructor(props) {
     super(props);
-    console.log('%c autocomplete props', 'color:pink')
-    console.log(this.props)
     this.state = {
       activeSuggestion: 0,
       filteredSuggestions: [],
       showSuggestions: false,
       userInput: this.props.origInput ? this.props.origInput.fullName : '',
+      // is focused on autocomplete element
       isFocused: false
     }
+    this._isMounted = false;
     this.onChange = this.onChange.bind(this);
-    this.onClick = this.onClick.bind(this);
-    this.handleBlur = this.handleBlur.bind(this)
-    this.handleFocus = this.handleFocus.bind(this)
+    this.handleDocClick = this.handleDocClick.bind(this)
   }
 
   /**
    *
    */
-  handleFocus() {
-    this.setState({ isFocused: true })
+  componentDidMount() {
+    this._isMounted = true;
+    document.addEventListener('click', this.handleDocClick)
+  }
+
+  handleDocClick(event) {
+    if (document.getElementById('autocomplete-input').contains(event.target)) {
+      const selected = event.target.innerText
+      if (this._isMounted) {
+        this.setState({ isFocused: true })
+        if(selected) {
+          this.setState({
+            activeSuggestion: 0,
+            filteredSuggestions: [],
+            showSuggestions: false,
+            userInput: selected,
+          })
+          // simulate event for parent's handleFieldChange
+          this.props.onChange({ target: { name: this.props.id, value: selected } })
+        }
+      }
+    } else {
+      if (this._isMounted) {
+        this.setState({ isFocused: false })
+      }
+    }
   }
 
   /**
    *
    */
-  handleBlur() {
-    this.setState({ isFocused: false })
+  componentWillUnmount() {
+    this._isMounted = false;
+    document.removeEventListener('click', this.handleDocClick);
   }
 
   /**
@@ -45,31 +68,18 @@ export class AutoComplete extends Component {
     const input = event.target.value
     const suggestions = this.props.suggestions
     const filtered = fuzzysort.go(input, suggestions, {limit: 6, allowTypo: false, key: 'fullName'})
-
-    this.setState({
-      activeSuggestion: 0,
-      filteredSuggestions: filtered,
-      showSuggestions: true,
-      userInput: input,
-    })
+    if(this._isMounted) {
+      this.setState({
+        activeSuggestion: 0,
+        filteredSuggestions: filtered,
+        showSuggestions: true,
+        userInput: input,
+      })
+    }
     // simulate event for parent's handleFieldChange
     this.props.onChange({ target: { name: this.props.id, value: input } })
   }
 
-  /**
-   *
-   * @param {*} event
-   */
-  onClick(event) {
-    this.setState({
-      activeSuggestion: 0,
-      filteredSuggestions: [],
-      showSuggestions: false,
-      userInput: event.target.innerText,
-    })
-    // simulate event for parent's handleFieldChange
-    this.props.onChange({ target: { name: this.props.id, value: input } })
-  }
 
   /**
    *
@@ -79,7 +89,6 @@ export class AutoComplete extends Component {
     const { isFocused } = this.state;
     let suggestionComponent;
     // if input exists and we should be displaying
-    console.log(isFocused)
     if (this.state.showSuggestions && this.state.userInput && isFocused) {
       if (this.state.filteredSuggestions.length) {
         // return a component with a list of suggestions
@@ -87,7 +96,7 @@ export class AutoComplete extends Component {
           <ul className="suggestions">
             {this.state.filteredSuggestions.map((suggestion, index) => {
               return (
-                <li key={suggestion.target} onClick={this.onClick}>
+                <li key={suggestion.target} >
                   {suggestion.target}
                 </li>
               );
@@ -103,19 +112,20 @@ export class AutoComplete extends Component {
       }
     }
 
+    // tracking click outside help https://medium.com/@pitipatdop/little-neat-trick-to-capture-click-outside-react-component-5604830beb7f
     return (
       <React.Fragment>
-        <input
-          type="text"
-          onChange={this.onChange}
-          value={this.state.userInput}
-          className='form-control'
-          placeholder='Enter Author'
-          onFocus={this.handleFocus}
-          onBlur={this.handleBlur}
-          required
-        />
-        {suggestionComponent}
+        <div id="autocomplete-input">
+          <input
+            type="text"
+            onChange={this.onChange}
+            value={this.state.userInput}
+            className='form-control'
+            placeholder='Enter Author'
+            required
+          />
+          {suggestionComponent}
+        </div>
       </React.Fragment>
     )
   }

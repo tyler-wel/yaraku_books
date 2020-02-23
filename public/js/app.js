@@ -74450,48 +74450,74 @@ function (_Component) {
     _classCallCheck(this, AutoComplete);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(AutoComplete).call(this, props));
-    console.log(_this.props);
     _this.state = {
       activeSuggestion: 0,
       filteredSuggestions: [],
       showSuggestions: false,
       userInput: _this.props.origInput ? _this.props.origInput.fullName : '',
-      suggestions: _this.props.suggestions
+      // is focused on autocomplete element
+      isFocused: false
     };
+    _this._isMounted = false;
     _this.onChange = _this.onChange.bind(_assertThisInitialized(_this));
-    _this.onClick = _this.onClick.bind(_assertThisInitialized(_this));
+    _this.handleDocClick = _this.handleDocClick.bind(_assertThisInitialized(_this));
     return _this;
   }
   /**
    *
-   * @param {*} event
    */
 
 
   _createClass(AutoComplete, [{
-    key: "onChange",
-    value: function onChange(event) {
-      var input = event.target.value;
-      var suggestions = this.state.suggestions;
-      var filtered = fuzzysort.go(input, suggestions, {
-        limit: 6,
-        allowTypo: false,
-        key: 'fullName'
-      });
-      this.setState({
-        activeSuggestion: 0,
-        filteredSuggestions: filtered,
-        showSuggestions: true,
-        userInput: input,
-        suggestions: this.state.suggestions
-      }); // simulate event for parent's handleFieldChange
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this._isMounted = true;
+      document.addEventListener('click', this.handleDocClick);
+    }
+  }, {
+    key: "handleDocClick",
+    value: function handleDocClick(event) {
+      if (document.getElementById('autocomplete-input').contains(event.target)) {
+        var selected = event.target.innerText;
 
-      this.props.onChange({
-        target: {
-          name: this.props.id,
-          value: input
+        if (this._isMounted) {
+          this.setState({
+            isFocused: true
+          });
+
+          if (selected) {
+            this.setState({
+              activeSuggestion: 0,
+              filteredSuggestions: [],
+              showSuggestions: false,
+              userInput: selected
+            }); // simulate event for parent's handleFieldChange
+
+            this.props.onChange({
+              target: {
+                name: this.props.id,
+                value: selected
+              }
+            });
+          }
         }
-      });
+      } else {
+        if (this._isMounted) {
+          this.setState({
+            isFocused: false
+          });
+        }
+      }
+    }
+    /**
+     *
+     */
+
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this._isMounted = false;
+      document.removeEventListener('click', this.handleDocClick);
     }
     /**
      *
@@ -74499,15 +74525,25 @@ function (_Component) {
      */
 
   }, {
-    key: "onClick",
-    value: function onClick(event) {
-      this.setState({
-        activeSuggestion: 0,
-        filteredSuggestions: [],
-        showSuggestions: false,
-        userInput: event.target.innerText,
-        suggestions: this.state.suggestions
-      }); // simulate event for parent's handleFieldChange
+    key: "onChange",
+    value: function onChange(event) {
+      var input = event.target.value;
+      var suggestions = this.props.suggestions;
+      var filtered = fuzzysort.go(input, suggestions, {
+        limit: 6,
+        allowTypo: false,
+        key: 'fullName'
+      });
+
+      if (this._isMounted) {
+        this.setState({
+          activeSuggestion: 0,
+          filteredSuggestions: filtered,
+          showSuggestions: true,
+          userInput: input
+        });
+      } // simulate event for parent's handleFieldChange
+
 
       this.props.onChange({
         target: {
@@ -74524,19 +74560,17 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
-
+      var isFocused = this.state.isFocused;
       var suggestionComponent; // if input exists and we should be displaying
 
-      if (this.state.showSuggestions && this.state.userInput) {
+      if (this.state.showSuggestions && this.state.userInput && isFocused) {
         if (this.state.filteredSuggestions.length) {
           // return a component with a list of suggestions
           suggestionComponent = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
             className: "suggestions"
           }, this.state.filteredSuggestions.map(function (suggestion, index) {
             return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-              key: suggestion.target,
-              onClick: _this2.onClick
+              key: suggestion.target
             }, suggestion.target);
           }));
         } else {
@@ -74545,16 +74579,19 @@ function (_Component) {
             className: "no-suggestion"
           });
         }
-      }
+      } // tracking click outside help https://medium.com/@pitipatdop/little-neat-trick-to-capture-click-outside-react-component-5604830beb7f
 
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        id: "autocomplete-input"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         type: "text",
         onChange: this.onChange,
         value: this.state.userInput,
         className: "form-control",
         placeholder: "Enter Author",
         required: true
-      }), suggestionComponent);
+      }), suggestionComponent));
     }
   }]);
 
@@ -74619,9 +74656,13 @@ function (_Component) {
     _this.state = {
       // Dummy data books until API is linked
       book: {
+        title: "",
         author: {
-          abr: ""
-        }
+          fullName: ""
+        },
+        description: "",
+        genre: "",
+        published: ""
       },
       authors: [],
       isEditing: false
@@ -74647,8 +74688,6 @@ function (_Component) {
 
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/books/".concat(this.props.match.params.id)).then(function (response) {
         if (_this2._isMounted) {
-          console.log(response);
-
           _this2.setState({
             book: response.data
           });
@@ -74698,9 +74737,7 @@ function (_Component) {
 
   }, {
     key: "saveBook",
-    value: function saveBook() {
-      console.log('saving book');
-    }
+    value: function saveBook() {}
     /**
      *
      */
@@ -74738,7 +74775,7 @@ function (_Component) {
             className: "form-control",
             type: "text",
             name: "title",
-            value: this.state.book.title,
+            value: book.title,
             onChange: this.handleFieldChange,
             autoComplete: "off",
             placeholder: "Enter Title"
@@ -74751,7 +74788,7 @@ function (_Component) {
             className: "info-label"
           }, "Author"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_AutoComplete__WEBPACK_IMPORTED_MODULE_2__["default"], {
             suggestions: this.state.authors,
-            origInput: this.state.book.author,
+            origInput: book.author,
             ref: "auto-complete"
           }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "row"
@@ -74760,15 +74797,15 @@ function (_Component) {
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
             htmlFor: "description",
             className: "info-label"
-          }, "Description"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+          }, "Description"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
             id: "description",
             className: "form-control",
-            type: "text",
             name: "description",
-            value: this.state.book.description,
+            value: book.description,
             onChange: this.handleFieldChange,
             autoComplete: "off",
-            placeholder: "Enter Description"
+            placeholder: "Enter Description",
+            rows: "3"
           }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "row"
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -74781,7 +74818,7 @@ function (_Component) {
             className: "form-control",
             type: "text",
             name: "genre",
-            value: this.state.book.genre,
+            value: book.genre,
             onChange: this.handleFieldChange,
             placeholder: "Enter a Genre"
           })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
@@ -74794,7 +74831,7 @@ function (_Component) {
             className: "form-control",
             type: "date",
             name: "published",
-            value: this.state.book.published,
+            value: book.published,
             onChange: this.handleFieldChange
           }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "row"
@@ -74823,7 +74860,7 @@ function (_Component) {
             onClick: this.switchToEdit
           }, "Edit"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "col-md-12 book-author"
-          }, book.author.abr)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          }, book.author.fullName)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "card-body"
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "row"
@@ -74832,12 +74869,12 @@ function (_Component) {
           }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", {
             htmlFor: "description",
             className: "info-label"
-          }, "Description"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+          }, "Description"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("textarea", {
             id: "description",
-            className: "form-control info-desc",
-            type: "text",
+            className: "form-control-plaintext info-desc",
             name: "description",
-            value: this.state.book.description,
+            value: book.description,
+            rows: "3",
             disabled: true
           }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "row"
@@ -74848,10 +74885,10 @@ function (_Component) {
             className: "info-label"
           }, "Genre"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
             id: "genre",
-            className: "form-control",
+            className: "form-control-plaintext",
             type: "text",
             name: "genre",
-            value: this.state.book.genre,
+            value: book.genre,
             disabled: true
           })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
             className: "col-md-5"
@@ -74860,10 +74897,10 @@ function (_Component) {
             className: "info-label"
           }, "Published"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
             id: "published",
-            className: "form-control",
+            className: "form-control-plaintext",
             type: "date",
             name: "published",
-            value: this.state.book.published,
+            value: book.published,
             disabled: true
           }))))))))
         );
@@ -74904,6 +74941,14 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -74965,6 +75010,7 @@ function (_Component) {
     _this.handleCreateNewBook = _this.handleCreateNewBook.bind(_assertThisInitialized(_this));
     _this.handleFieldChange = _this.handleFieldChange.bind(_assertThisInitialized(_this));
     _this.handleDelete = _this.handleDelete.bind(_assertThisInitialized(_this));
+    _this.getAllAuthors = _this.getAllAuthors.bind(_assertThisInitialized(_this));
     return _this;
   }
   /**
@@ -74986,16 +75032,20 @@ function (_Component) {
           });
         }
       });
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/authors').then(function (response) {
-        if (_this2._isMounted) {
-          console.log(response);
+      this.getAllAuthors();
+    }
+  }, {
+    key: "getAllAuthors",
+    value: function getAllAuthors() {
+      var _this3 = this;
 
-          _this2.setState({
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/authors').then(function (response) {
+        if (_this3._isMounted) {
+          _this3.setState({
             authors: response.data
           });
         }
       });
-      console.log(this.refs);
     }
     /**
      *
@@ -75014,11 +75064,42 @@ function (_Component) {
   }, {
     key: "handleCreateNewBook",
     value: function handleCreateNewBook(event) {
-      event.preventDefault();
-      console.log('attempting to create');
+      var _this4 = this;
+
+      event.preventDefault(); // This is a poor way to really handle finding existing author, would be better
+      //  to implement a find_like, maybe String.search()
+
+      var author = this.state.authors.find(function (author) {
+        return _this4.state.author == author.fullName;
+      }); // if author was found, pass that author's id for relation
+      // if author was not found, pass new name for creating new author
+
+      var book = {
+        title: this.state.title,
+        author_id: author == null ? null : author.id,
+        author_name: author == null ? this.state.author : null,
+        genre: this.state.genre,
+        published: this.state.published
+      };
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/books', book).then(function (response) {
+        console.log(response);
+        var books = [].concat(_toConsumableArray(_this4.state.books), [response.data]);
+
+        if (_this4._isMounted) {
+          _this4.setState({
+            books: books
+          });
+        } // Lazy handling if a new author was added
+        //  reload all authors
+
+
+        _this4.getAllAuthors();
+      })["catch"](function (error) {
+        console.error(error);
+      });
     }
     /**
-     *
+     *C
      * @param {*} event
      */
 
@@ -75045,7 +75126,7 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this5 = this;
 
       var books = this.state.books; // Columns for BootstrapTable
 
@@ -75056,10 +75137,7 @@ function (_Component) {
         events: {
           // When title row is clicked, redirect to book
           onClick: function onClick(e, column, columnIndex, row, rowIndex) {
-            console.log(column);
-            console.log(row);
-
-            _this3.setState({
+            _this5.setState({
               selectedBook: row.id,
               toBook: true
             });
@@ -75074,9 +75152,7 @@ function (_Component) {
         text: 'Author',
         sort: true,
         events: {
-          onClick: function onClick(e, column, columnIndex, row, rowIndex) {
-            console.log(row);
-          }
+          onClick: function onClick(e, column, columnIndex, row, rowIndex) {}
         },
         style: {}
       }, {
@@ -75153,9 +75229,9 @@ function (_Component) {
           onClick: handleClick
         }, "Search")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
           className: "btn trash-btn col-md-2",
-          onClick: _this3.handleDelete
+          onClick: _this5.handleDelete
         }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
-          "class": "fa fa-trash"
+          className: "fa fa-trash"
         })));
       }; // checkbox for row selection
 
