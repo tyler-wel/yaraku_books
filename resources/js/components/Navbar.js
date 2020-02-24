@@ -7,7 +7,7 @@ const Navbar = () => (
   <nav className='navbar navbar-expand-lg navbar-dark bg-dark navbar-laravel'>
     <div className='container'>
       <Link className='navbar-brand' to='/'>
-        Yaraku Books
+        Great Book List
       </Link>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarLinks" aria-controls="navbarLinks" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
