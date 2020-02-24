@@ -27,8 +27,8 @@ git clone https://github.com/tyler-wel/yaraku_books.git
 
 After cloning, please run the following commands
 ```
-composer install
 npm install
+composer install
 ```
 
 Duplicate the `.env.example` and rename it to `.env`. 
@@ -37,10 +37,9 @@ After duplicating, run the follow command and copy it into `APP_KEY` in your new
 php artisan key:generate
 ```
 
-Please run the following command to run the migrations (with optional faker seed)
+Please run the following command if you want to seed the database fresh
 ```
-php artisan migrate
-php artisan migrate --seed
+php artisan migrate:fresh --seed
 ```
 
 And finally, run the following command to get the frontend built
