@@ -1,7 +1,5 @@
 # Great Book List (Laravel + React App)
 
-![Heroku](https://heroku-badge.herokuapp.com/?app=pure-river-32168)
-
 Visit the site [here](https://pure-river-32168.herokuapp.com/)!
 
 
