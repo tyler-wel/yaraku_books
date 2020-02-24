@@ -68,7 +68,7 @@ class BookController extends Controller {
 
     $book->save();
 
-    return response()->json($book, 201);
+    return response()->json($book, 200);
   }
 
   /**

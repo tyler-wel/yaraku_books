@@ -65,11 +65,11 @@ class AuthorList extends Component {
       lastPageTitle: 'Last page',
       showTotal: false,
       sizePerPageList: [{
-        text: '20', value: 20
+        text: '15', value: 15
+      }, {
+        text: '30', value: 30
       }, {
         text: '50', value: 50
-      }, {
-        text: 'All', value: authors.length
       }]
     }
 

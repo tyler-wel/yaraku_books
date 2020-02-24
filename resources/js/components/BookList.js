@@ -107,14 +107,20 @@ class BookList extends Component {
   handleDelete(event) {
     event.preventDefault()
     if(this.state.selectedBooks.length > 0) {
-      axios.put('/api/books', this.state.selectedBooks).then(() => {
-        Swal.fire("Books Deleted!", "", "success").then(() => {
-          window.location.reload()
-        })
-      }).catch (error => {
-        console.error(error)
-        Swal.fire("An error has occured :(", "The books couldn't be deleted...", "error").then(() => {
-          window.location.reload()
+      Swal.fire({
+        title: "Confirm Deletion",
+        text: "Are you sure you want to delete the selected books?",
+        showCancelButton: true
+      }).then(() => {
+        axios.put('/api/books', this.state.selectedBooks).then(() => {
+          Swal.fire("Books Deleted!", "", "success").then(() => {
+            window.location.reload()
+          })
+        }).catch (error => {
+          console.error(error)
+          Swal.fire("An error has occured :(", "The books couldn't be deleted...", "error").then(() => {
+            window.location.reload()
+          })
         })
       })
     }
@@ -227,7 +233,7 @@ class BookList extends Component {
     // Pagination options for BootstrapTable
     const pageOptions = {
       paginationSize: 4,
-      pageStartIndex: 0,
+      pageStartIndex: 1,
       firstPageText: 'First',
       prePageText: 'Back',
       nextPageText: 'Next',
@@ -238,11 +244,11 @@ class BookList extends Component {
       lastPageTitle: 'Last page',
       showTotal: false,
       sizePerPageList: [{
-        text: '20', value: 20
+        text: '15', value: 15
+      }, {
+        text: '30', value: 30
       }, {
         text: '50', value: 50
-      }, {
-        text: 'All', value: books.length
       }]
     }
 
